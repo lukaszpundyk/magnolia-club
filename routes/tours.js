@@ -4,7 +4,7 @@ const db = require('../database/db');
 
 // Tours listing
 router.get('/', (req, res) => {
-  const { transport, days, destination, maxPrice } = req.query;
+  const { transport, days, country, departure_city, maxPrice } = req.query;
 
   let sql = 'SELECT * FROM tours WHERE active = 1';
   const params = [];
@@ -26,9 +26,14 @@ router.get('/', (req, res) => {
     }
   }
 
-  if (destination && destination !== 'all') {
-    sql += ' AND destination = ?';
-    params.push(destination);
+  if (country && country !== 'all') {
+    sql += ' AND destination_country LIKE ?';
+    params.push('%' + country + '%');
+  }
+
+  if (departure_city && departure_city !== 'all') {
+    sql += ' AND departure_city = ?';
+    params.push(departure_city);
   }
 
   if (maxPrice) {
@@ -40,10 +45,23 @@ router.get('/', (req, res) => {
 
   const tours = db.prepare(sql).all(...params);
 
-  // Get all destinations for filter
-  const destinations = db.prepare(
-    'SELECT DISTINCT destination FROM tours WHERE active = 1 ORDER BY destination'
-  ).all().map(d => d.destination);
+  // Get all countries for filter (parse comma-separated values)
+  const countryRows = db.prepare(
+    'SELECT destination_country FROM tours WHERE active = 1 AND destination_country IS NOT NULL'
+  ).all();
+  const countriesSet = new Set();
+  countryRows.forEach(row => {
+    row.destination_country.split(',').forEach(c => {
+      const trimmed = c.trim();
+      if (trimmed) countriesSet.add(trimmed);
+    });
+  });
+  const countries = [...countriesSet].sort();
+
+  // Get all departure cities for filter
+  const departureCities = db.prepare(
+    'SELECT DISTINCT departure_city FROM tours WHERE active = 1 AND departure_city IS NOT NULL ORDER BY departure_city'
+  ).all().map(d => d.departure_city);
 
   // Get price range
   const priceRange = db.prepare(
@@ -54,9 +72,10 @@ router.get('/', (req, res) => {
     title: 'Wycieczki - Magnolia Club',
     layout: 'layout/main',
     tours,
-    destinations,
+    countries,
+    departureCities,
     priceRange: priceRange || { min: 0, max: 1000 },
-    filters: { transport, days, destination, maxPrice }
+    filters: { transport, days, country, departure_city, maxPrice }
   });
 });
 
@@ -76,10 +95,10 @@ router.get('/:slug', (req, res) => {
   // Parse gallery images
   tour.galleryImages = JSON.parse(tour.gallery_images || '[]');
 
-  // Related tours (same destination, exclude current)
+  // Related tours (same country, exclude current)
   const relatedTours = db.prepare(
-    'SELECT * FROM tours WHERE destination = ? AND id != ? AND active = 1 LIMIT 3'
-  ).all(tour.destination, tour.id);
+    'SELECT * FROM tours WHERE destination_country = ? AND id != ? AND active = 1 LIMIT 3'
+  ).all(tour.destination_country, tour.id);
 
   // Active tours for inquiry form dropdown
   const activeTours = db.prepare('SELECT id, title FROM tours WHERE active = 1 ORDER BY title').all();

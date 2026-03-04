@@ -17,6 +17,8 @@ db.exec(`
     description TEXT,
     short_description TEXT,
     destination TEXT,
+    destination_country TEXT,
+    departure_city TEXT,
     transport TEXT CHECK(transport IN ('bus', 'train', 'plane', 'own')) DEFAULT 'bus',
     days INTEGER DEFAULT 1,
     price REAL DEFAULT 0,
@@ -74,5 +76,14 @@ db.exec(`
     password_hash TEXT NOT NULL
   );
 `);
+
+// Migrations - add new columns to existing tables
+try {
+  db.exec(`ALTER TABLE tours ADD COLUMN destination_country TEXT`);
+} catch (e) { /* column already exists */ }
+
+try {
+  db.exec(`ALTER TABLE tours ADD COLUMN departure_city TEXT`);
+} catch (e) { /* column already exists */ }
 
 module.exports = db;

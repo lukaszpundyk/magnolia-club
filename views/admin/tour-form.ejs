@@ -20,8 +20,19 @@
                class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
       </div>
       <div>
-        <label class="block text-sm font-medium text-mc-light mb-2">Cel podróży *</label>
-        <input type="text" name="destination" value="<%= tour ? tour.destination : '' %>" required placeholder="np. Berlin, Hamburg"
+        <label class="block text-sm font-medium text-mc-light mb-2">Kraje docelowe *</label>
+        <input type="text" name="destination_country" value="<%= tour ? tour.destination_country : '' %>" required placeholder="np. Niemcy, Francja, Włochy (oddzielone przecinkami)"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+        <p class="text-xs text-mc-muted mt-1">Wpisz kraje oddzielone przecinkami, np. Niemcy, Austria, Czechy</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Cel podróży (miejsce/miasto)</label>
+        <input type="text" name="destination" value="<%= tour ? tour.destination : '' %>" placeholder="np. Berlin, Toskania, Lazurowe Wybrzeże"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Miasto wyjazdu</label>
+        <input type="text" name="departure_city" value="<%= tour ? tour.departure_city : '' %>" placeholder="np. Szczecin, Warszawa"
                class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
       </div>
       <div>
