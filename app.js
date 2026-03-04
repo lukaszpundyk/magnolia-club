@@ -32,7 +32,8 @@ app.use(helmet({
       objectSrc: ["'none'"]
     }
   },
-  crossOriginEmbedderPolicy: false
+  crossOriginEmbedderPolicy: false,
+  strictTransportSecurity: false // Disable HSTS until HTTPS/SSL is configured
 }));
 
 // Hide X-Powered-By header
