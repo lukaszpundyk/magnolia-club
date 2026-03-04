@@ -202,6 +202,13 @@ server {
         access_log off;
     }
 
+    location /fonts/ {
+        alias /var/www/magnolia-club/public/fonts/;
+        expires 365d;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+    }
+
     # Everything else — proxy to Node.js
     location / {
         limit_req zone=general burst=20 nodelay;
