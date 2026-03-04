@@ -1,0 +1,98 @@
+<!-- Hero -->
+<section class="relative">
+  <% if (post.cover_image) { %>
+    <div class="h-64 md:h-80 bg-cover bg-center" style="background-image: url('/uploads/blog/<%= post.cover_image %>')">
+      <div class="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-white/30 h-64 md:h-80"></div>
+    </div>
+  <% } else { %>
+    <div class="h-64 md:h-80 bg-gradient-to-br from-gray-100 via-gray-50 to-mc-bg"></div>
+  <% } %>
+  <div class="absolute inset-0 flex items-end h-64 md:h-80">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 w-full">
+      <nav class="text-sm text-mc-muted mb-4">
+        <a href="/" class="hover:text-mc-accent transition-colors">Strona główna</a>
+        <span class="mx-2">/</span>
+        <a href="/blog" class="hover:text-mc-accent transition-colors">Blog</a>
+        <span class="mx-2">/</span>
+        <span class="text-mc-light"><%= post.title %></span>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- Article -->
+<article class="py-12">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <header class="mb-10">
+      <% if (post.category) { %>
+        <span class="text-xs font-medium bg-mc-accent/20 text-mc-accent px-3 py-1 rounded-full"><%= post.category %></span>
+      <% } %>
+      <h1 class="font-heading text-3xl md:text-4xl font-bold text-mc-light mt-4 mb-4"><%= post.title %></h1>
+      <div class="flex items-center space-x-4 text-sm text-mc-muted">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-full bg-mc-accent/20 flex items-center justify-center text-mc-accent text-xs font-bold">
+            <%= post.author ? post.author.charAt(0).toUpperCase() : 'M' %>
+          </div>
+          <span><%= post.author %></span>
+        </div>
+        <span>&bull;</span>
+        <span><%= new Date(post.created_at).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }) %></span>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="prose prose-lg max-w-none
+                prose-headings:font-heading prose-headings:text-mc-light
+                prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
+                prose-p:text-mc-muted prose-p:leading-relaxed
+                prose-a:text-mc-accent prose-a:no-underline hover:prose-a:text-mc-highlight
+                prose-strong:text-mc-light
+                prose-ul:text-mc-muted prose-ol:text-mc-muted
+                prose-blockquote:border-mc-accent prose-blockquote:text-mc-muted
+                prose-hr:border-gray-200">
+      <%- post.htmlContent %>
+    </div>
+
+    <!-- Back + Share -->
+    <div class="mt-12 pt-8 border-t border-gray-200 flex items-center justify-between">
+      <a href="/blog" class="inline-flex items-center text-mc-accent hover:text-mc-highlight transition-colors font-medium">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Wróć do bloga
+      </a>
+    </div>
+  </div>
+</article>
+
+<!-- Related Posts -->
+<% if (relatedPosts.length > 0) { %>
+<section class="py-12 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="font-heading text-2xl font-bold text-mc-light mb-8">Powiązane artykuły</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <% relatedPosts.forEach(rp => { %>
+        <article class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-mc-accent/30 transition-all duration-300 group">
+          <a href="/blog/<%= rp.slug %>" class="block aspect-video overflow-hidden">
+            <% if (rp.cover_image) { %>
+              <img src="/uploads/blog/<%= rp.cover_image %>" alt="<%= rp.title %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <% } else { %>
+              <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-100 flex items-center justify-center">
+                <svg class="w-10 h-10 text-mc-accent/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+              </div>
+            <% } %>
+          </a>
+          <div class="p-5">
+            <h3 class="font-heading font-semibold text-mc-light mb-2 line-clamp-2">
+              <a href="/blog/<%= rp.slug %>" class="hover:text-mc-accent transition-colors"><%= rp.title %></a>
+            </h3>
+            <p class="text-mc-muted text-sm line-clamp-2"><%= rp.excerpt %></p>
+          </div>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<!-- Tailwind Typography Plugin via CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>

@@ -1,0 +1,355 @@
+<!-- Hero Banner -->
+<section class="relative bg-mc-bg2 py-16 md:py-20 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-gray-100 via-gray-50 to-mc-bg opacity-80"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-mc-accent/5 via-transparent to-transparent"></div>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Breadcrumb -->
+    <nav class="mb-6" aria-label="Breadcrumb">
+      <ol class="flex items-center space-x-2 text-sm font-body">
+        <li>
+          <a href="/" class="text-mc-muted hover:text-mc-accent transition-colors">Strona g&lstrok;&oacute;wna</a>
+        </li>
+        <li class="text-mc-muted/50">
+          <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </li>
+        <li>
+          <span class="text-mc-accent font-medium">Wycieczki</span>
+        </li>
+      </ol>
+    </nav>
+
+    <h1 class="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-mc-light mb-4">
+      Nasze wycieczki
+    </h1>
+    <p class="text-mc-muted text-base md:text-lg max-w-2xl leading-relaxed">
+      Odkryj starannie wybrane kierunki i do&lstrok;&aogon;cz do kameralnej grupy podr&oacute;&zdot;nik&oacute;w.
+      Ka&zdot;da wycieczka to niepowtarzalne do&sacute;wiadczenie — wolniej, g&lstrok;&eogon;biej, autentyczniej.
+    </p>
+  </div>
+</section>
+
+<!-- Filter Section -->
+<section class="bg-mc-bg border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <form id="filter-form" action="/wycieczki" method="GET" class="space-y-6">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      <!-- Transport Filter -->
+      <div>
+        <label class="block font-heading text-sm font-semibold text-mc-light mb-3 uppercase tracking-wider">
+          Transport
+        </label>
+        <div class="flex flex-wrap gap-2">
+          <button type="submit" name="transport" value=""
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= !filters.transport ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            Wszystkie
+          </button>
+          <button type="submit" name="transport" value="bus"
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= filters.transport === 'bus' ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            <svg class="w-4 h-4 inline mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8m-8 4h8m-4 4v3m-4-3h8a2 2 0 002-2V6a2 2 0 00-2-2H8a2 2 0 00-2 2v7a2 2 0 002 2zm-2 3h12"></path></svg>
+            Autokar
+          </button>
+          <button type="submit" name="transport" value="train"
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= filters.transport === 'train' ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            <svg class="w-4 h-4 inline mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6m-6 0a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2m-6 0l-2 3m8-3l2 3m-9-3h10M5 3h14"></path></svg>
+            Pociag
+          </button>
+          <button type="submit" name="transport" value="plane"
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= filters.transport === 'plane' ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            <svg class="w-4 h-4 inline mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 0l-4 4m4-4l4 4M5 12h14"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.5 18.5l3-3m14 3l-3-3"></path></svg>
+            Samolot
+          </button>
+          <button type="submit" name="transport" value="own"
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= filters.transport === 'own' ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            <svg class="w-4 h-4 inline mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            Wlasny transport
+          </button>
+        </div>
+      </div>
+
+      <!-- Days Filter -->
+      <div>
+        <label class="block font-heading text-sm font-semibold text-mc-light mb-3 uppercase tracking-wider">
+          Czas trwania
+        </label>
+        <div class="flex flex-wrap gap-2">
+          <button type="submit" name="days" value=""
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= !filters.days ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            Wszystkie
+          </button>
+          <button type="submit" name="days" value="1"
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= filters.days === '1' ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            1 dzien
+          </button>
+          <button type="submit" name="days" value="2-3"
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= filters.days === '2-3' ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            2-3 dni
+          </button>
+          <button type="submit" name="days" value="4-7"
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= filters.days === '4-7' ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            4-7 dni
+          </button>
+          <button type="submit" name="days" value="8+"
+            class="filter-pill px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+            <%= filters.days === '8+' ? 'bg-mc-accent text-white shadow-lg shadow-black/10' : 'bg-white text-mc-muted hover:bg-gray-50 hover:text-mc-light border border-gray-200' %>">
+            8+ dni
+          </button>
+        </div>
+      </div>
+
+      <!-- Destination & Price Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Destination Dropdown -->
+        <div>
+          <label for="destination" class="block font-heading text-sm font-semibold text-mc-light mb-3 uppercase tracking-wider">
+            Kierunek
+          </label>
+          <select id="destination" name="destination"
+            class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light text-sm
+                   focus:outline-none focus:ring-2 focus:ring-mc-accent/50 focus:border-mc-accent/50
+                   appearance-none cursor-pointer"
+            onchange="this.form.submit()"
+            style="background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%239ca3af%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right 12px center; background-size: 20px;">
+            <option value="">Wszystkie kierunki</option>
+            <% destinations.forEach(function(dest) { %>
+              <option value="<%= dest %>" <%= filters.destination === dest ? 'selected' : '' %>><%= dest %></option>
+            <% }); %>
+          </select>
+        </div>
+
+        <!-- Price Range Slider -->
+        <div>
+          <label for="maxPrice" class="block font-heading text-sm font-semibold text-mc-light mb-3 uppercase tracking-wider">
+            Cena maksymalna: <span id="price-display" class="text-mc-accent"><%= filters.maxPrice || priceRange.max %> PLN</span>
+          </label>
+          <div class="relative">
+            <input type="range" id="maxPrice" name="maxPrice"
+              min="<%= priceRange.min %>" max="<%= priceRange.max %>" step="50"
+              value="<%= filters.maxPrice || priceRange.max %>"
+              class="w-full h-2 bg-gray-50 rounded-lg appearance-none cursor-pointer
+                     [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5
+                     [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-mc-accent
+                     [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:shadow-mc-accent/30
+                     [&::-webkit-slider-thumb]:cursor-pointer
+                     [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full
+                     [&::-moz-range-thumb]:bg-mc-accent [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer">
+            <div class="flex justify-between text-xs text-mc-muted mt-2">
+              <span><%= priceRange.min %> PLN</span>
+              <span><%= priceRange.max %> PLN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Filters Summary & Reset -->
+      <% if (filters.transport || filters.days || filters.destination || (filters.maxPrice && filters.maxPrice < priceRange.max)) { %>
+        <div class="flex flex-wrap items-center gap-3 pt-2 border-t border-gray-200">
+          <span class="text-mc-muted text-sm">Aktywne filtry:</span>
+          <% if (filters.transport) { %>
+            <span class="inline-flex items-center bg-mc-accent/10 text-mc-accent text-xs font-medium px-3 py-1 rounded-full border border-mc-accent/20">
+              <%= filters.transport === 'bus' ? 'Autokar' : filters.transport === 'train' ? 'Pociag' : filters.transport === 'plane' ? 'Samolot' : 'Wlasny transport' %>
+            </span>
+          <% } %>
+          <% if (filters.days) { %>
+            <span class="inline-flex items-center bg-mc-accent/10 text-mc-accent text-xs font-medium px-3 py-1 rounded-full border border-mc-accent/20">
+              <%= filters.days === '1' ? '1 dzien' : filters.days === '2-3' ? '2-3 dni' : filters.days === '4-7' ? '4-7 dni' : '8+ dni' %>
+            </span>
+          <% } %>
+          <% if (filters.destination) { %>
+            <span class="inline-flex items-center bg-mc-accent/10 text-mc-accent text-xs font-medium px-3 py-1 rounded-full border border-mc-accent/20">
+              <%= filters.destination %>
+            </span>
+          <% } %>
+          <% if (filters.maxPrice && filters.maxPrice < priceRange.max) { %>
+            <span class="inline-flex items-center bg-mc-accent/10 text-mc-accent text-xs font-medium px-3 py-1 rounded-full border border-mc-accent/20">
+              do <%= filters.maxPrice %> PLN
+            </span>
+          <% } %>
+          <a href="/wycieczki"
+            class="ml-auto text-sm text-mc-muted hover:text-red-400 transition-colors flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Wyczysc filtry
+          </a>
+        </div>
+      <% } %>
+    </form>
+  </div>
+</section>
+
+<!-- Tours Grid -->
+<section class="py-12 md:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <% if (tours.length === 0) { %>
+      <!-- Empty State -->
+      <div class="text-center py-20">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 mb-6">
+          <svg class="w-10 h-10 text-mc-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+        <h2 class="font-heading font-bold text-2xl text-mc-light mb-3">Nie znaleziono wycieczek</h2>
+        <p class="text-mc-muted text-base max-w-md mx-auto mb-8 leading-relaxed">
+          Zadna wycieczka nie pasuje do wybranych filtrow. Sprobuj zmienic kryteria wyszukiwania lub wyczysc filtry, aby zobaczyc wszystkie dostepne oferty.
+        </p>
+        <a href="/wycieczki"
+          class="inline-flex items-center gap-2 bg-mc-accent hover:bg-mc-highlight text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          Wyczysc filtry
+        </a>
+      </div>
+
+    <% } else { %>
+
+      <!-- Results Count -->
+      <div class="mb-8">
+        <p class="text-mc-muted text-sm">
+          Znaleziono <span class="text-mc-light font-semibold"><%= tours.length %></span>
+          <%= tours.length === 1 ? 'wycieczke' : (tours.length >= 2 && tours.length <= 4) ? 'wycieczki' : 'wycieczek' %>
+        </p>
+      </div>
+
+      <!-- Grid -->
+      <div id="tours-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+
+        <% tours.forEach(function(tour) { %>
+          <%
+            var transportLabel = tour.transport === 'bus' ? 'Autokar' : tour.transport === 'train' ? 'Pociag' : tour.transport === 'plane' ? 'Samolot' : 'Wlasny transport';
+            var departureDate = new Date(tour.departure_date);
+            var formattedDate = departureDate.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+            var formattedPrice = Number(tour.price).toLocaleString('pl-PL');
+          %>
+          <article
+            class="tour-card group bg-mc-bg2 rounded-2xl overflow-hidden border border-gray-200
+                   hover:border-mc-accent/30 transition-all duration-300
+                   hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1"
+            data-transport="<%= tour.transport %>"
+            data-days="<%= tour.days %>"
+            data-destination="<%= tour.destination %>"
+            data-price="<%= tour.price %>">
+
+            <!-- Image -->
+            <div class="relative aspect-[16/10] overflow-hidden">
+              <% if (tour.cover_image) { %>
+                <img src="<%= tour.cover_image %>" alt="<%= tour.title %>"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy">
+              <% } else { %>
+                <div class="w-full h-full bg-gradient-to-br from-gray-100 via-gray-50 to-mc-accent/5 flex items-center justify-center">
+                  <svg class="w-12 h-12 text-mc-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+              <% } %>
+
+              <!-- Destination Badge -->
+              <div class="absolute top-3 left-3">
+                <span class="inline-flex items-center bg-white/90 backdrop-blur-sm text-mc-light text-xs font-medium px-3 py-1.5 rounded-full border border-gray-200">
+                  <svg class="w-3 h-3 mr-1.5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+                  <%= tour.destination %>
+                </span>
+              </div>
+
+              <!-- Price Badge -->
+              <div class="absolute top-3 right-3">
+                <span class="inline-flex items-center bg-mc-accent text-white text-sm font-bold px-3 py-1.5 rounded-full shadow-lg shadow-black/10">
+                  <%= formattedPrice %> PLN
+                </span>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-5">
+              <!-- Title -->
+              <h3 class="font-heading font-bold text-lg text-mc-light mb-3 leading-tight group-hover:text-mc-highlight transition-colors line-clamp-2">
+                <%= tour.title %>
+              </h3>
+
+              <!-- Meta Info -->
+              <div class="space-y-2 mb-4">
+                <!-- Transport -->
+                <div class="flex items-center text-sm text-mc-muted">
+                  <% if (tour.transport === 'bus') { %>
+                    <svg class="w-4 h-4 mr-2 text-mc-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8m-8 4h8m-4 4v3m-4-3h8a2 2 0 002-2V6a2 2 0 00-2-2H8a2 2 0 00-2 2v7a2 2 0 002 2zm-2 3h12"></path></svg>
+                  <% } else if (tour.transport === 'train') { %>
+                    <svg class="w-4 h-4 mr-2 text-mc-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6m-6 0a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2m-6 0l-2 3m8-3l2 3m-9-3h10M5 3h14"></path></svg>
+                  <% } else if (tour.transport === 'plane') { %>
+                    <svg class="w-4 h-4 mr-2 text-mc-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 0l-4 4m4-4l4 4M5 12h14"></path></svg>
+                  <% } else { %>
+                    <svg class="w-4 h-4 mr-2 text-mc-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                  <% } %>
+                  <span><%= transportLabel %></span>
+                </div>
+
+                <!-- Days -->
+                <div class="flex items-center text-sm text-mc-muted">
+                  <svg class="w-4 h-4 mr-2 text-mc-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <span>
+                    <%= tour.days %> <%= tour.days === 1 ? 'dzien' : (tour.days >= 2 && tour.days <= 4) ? 'dni' : 'dni' %>
+                  </span>
+                </div>
+
+                <!-- Departure Date -->
+                <div class="flex items-center text-sm text-mc-muted">
+                  <svg class="w-4 h-4 mr-2 text-mc-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span>Wyjazd: <%= formattedDate %></span>
+                </div>
+
+                <!-- Available Spots -->
+                <div class="flex items-center text-sm">
+                  <svg class="w-4 h-4 mr-2 flex-shrink-0 <%= tour.available_spots < 5 ? 'text-red-400' : 'text-mc-accent' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+                  <span class="<%= tour.available_spots < 5 ? 'text-red-400 font-semibold' : 'text-mc-muted' %>">
+                    <% if (tour.available_spots < 5) { %>
+                      Ostatnie <%= tour.available_spots %> <%= tour.available_spots === 1 ? 'miejsce' : (tour.available_spots >= 2 && tour.available_spots <= 4) ? 'miejsca' : 'miejsc' %>!
+                    <% } else { %>
+                      <%= tour.available_spots %> wolnych miejsc
+                    <% } %>
+                  </span>
+                </div>
+              </div>
+
+              <!-- CTA Button -->
+              <a href="/wycieczki/<%= tour.slug %>"
+                class="block w-full text-center bg-white hover:bg-mc-accent text-mc-light hover:text-white
+                       font-semibold py-3 rounded-xl transition-all duration-200
+                       border border-gray-200 hover:border-mc-accent
+                       group-hover:bg-mc-accent group-hover:text-white group-hover:border-mc-accent">
+                Szczegoly
+                <svg class="w-4 h-4 inline ml-1 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </a>
+            </div>
+          </article>
+        <% }); %>
+
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<script src="/js/filters.js"></script>

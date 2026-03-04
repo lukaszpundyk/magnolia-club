@@ -1,0 +1,72 @@
+<div class="flex items-center justify-between mb-8">
+  <h1 class="font-heading text-2xl font-bold text-mc-light">Blog</h1>
+  <a href="/admin/blog/add" class="bg-mc-accent hover:bg-mc-highlight text-white font-semibold px-5 py-2.5 rounded-lg transition-all text-sm">+ Dodaj wpis</a>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+  <% if (posts.length === 0) { %>
+    <div class="px-6 py-12 text-center text-mc-muted">
+      <p>Brak wpisów na blogu. Dodaj pierwszy wpis.</p>
+    </div>
+  <% } else { %>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-mc-muted text-xs uppercase tracking-wider border-b border-gray-200">
+            <th class="text-left px-6 py-3">Tytuł</th>
+            <th class="text-left px-6 py-3 hidden md:table-cell">Kategoria</th>
+            <th class="text-left px-6 py-3 hidden md:table-cell">Autor</th>
+            <th class="text-left px-6 py-3 hidden lg:table-cell">Data</th>
+            <th class="text-left px-6 py-3">Status</th>
+            <th class="text-right px-6 py-3">Akcje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% posts.forEach(post => { %>
+            <tr class="border-b border-gray-200 hover:bg-gray-50">
+              <td class="px-6 py-3">
+                <div class="flex items-center space-x-3">
+                  <% if (post.cover_image) { %>
+                    <img src="/uploads/blog/<%= post.cover_image %>" alt="" class="w-10 h-10 rounded object-cover flex-shrink-0">
+                  <% } else { %>
+                    <div class="w-10 h-10 rounded bg-mc-accent/10 flex-shrink-0"></div>
+                  <% } %>
+                  <p class="text-mc-light font-medium"><%= post.title %></p>
+                </div>
+              </td>
+              <td class="px-6 py-3 text-mc-muted hidden md:table-cell">
+                <% if (post.category) { %>
+                  <span class="text-xs bg-mc-accent/10 text-mc-accent px-2 py-1 rounded-full"><%= post.category %></span>
+                <% } else { %>—<% } %>
+              </td>
+              <td class="px-6 py-3 text-mc-muted hidden md:table-cell"><%= post.author %></td>
+              <td class="px-6 py-3 text-mc-muted hidden lg:table-cell"><%= new Date(post.created_at).toLocaleDateString('pl-PL') %></td>
+              <td class="px-6 py-3">
+                <% if (post.published) { %>
+                  <span class="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full border border-green-200">Opublikowany</span>
+                <% } else { %>
+                  <span class="text-xs bg-yellow-50 text-yellow-600 px-2 py-1 rounded-full border border-yellow-200">Szkic</span>
+                <% } %>
+              </td>
+              <td class="px-6 py-3">
+                <div class="flex items-center justify-end space-x-2">
+                  <a href="/admin/blog/edit/<%= post.id %>" class="text-mc-accent hover:text-mc-highlight text-xs transition-colors">Edytuj</a>
+                  <form action="/admin/blog/toggle/<%= post.id %>" method="POST" class="inline">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="text-yellow-600 hover:text-yellow-700 text-xs transition-colors">
+                      <%= post.published ? 'Ukryj' : 'Publikuj' %>
+                    </button>
+                  </form>
+                  <form action="/admin/blog/delete/<%= post.id %>" method="POST" class="inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten wpis?')">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="text-red-500 hover:text-red-600 text-xs transition-colors">Usuń</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

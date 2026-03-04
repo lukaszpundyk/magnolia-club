@@ -1,0 +1,396 @@
+<!-- ============================================================
+     HERO SECTION — full-screen with elegant light gradient
+     ============================================================ -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden -mt-16 md:-mt-20">
+  <!-- Light gradient background -->
+  <div class="absolute inset-0" style="background:
+    radial-gradient(ellipse 80% 50% at 50% 20%, rgba(110,139,160,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(81,111,136,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(110,139,160,0.03) 0%, transparent 50%),
+    linear-gradient(180deg, #F7F9FB 0%, #ECF0F5 40%, #FFFFFF 70%, #F7F9FB 100%);">
+  </div>
+
+  <!-- Subtle grid lines for depth -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image:
+    linear-gradient(rgba(110,139,160,0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(110,139,160,0.2) 1px, transparent 1px);
+    background-size: 60px 60px;">
+  </div>
+
+  <!-- Floating accent shapes -->
+  <div class="absolute top-1/4 left-10 w-72 h-72 bg-mc-accent/[0.03] rounded-full blur-3xl"></div>
+  <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-mc-highlight/[0.03] rounded-full blur-3xl"></div>
+
+  <!-- Hero content -->
+  <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
+    <p class="font-heading text-mc-accent text-sm sm:text-base uppercase tracking-[0.3em] mb-6 opacity-0 animate-[fadeInUp_0.8s_ease_0.2s_forwards]">
+      Magnolia Club &mdash; Biuro Podróży
+    </p>
+
+    <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-mc-light leading-tight mb-6 opacity-0 animate-[fadeInUp_0.8s_ease_0.4s_forwards]">
+      Poznaj świat<br class="hidden sm:block"> inaczej
+    </h1>
+
+    <p class="font-body text-mc-muted text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-10 opacity-0 animate-[fadeInUp_0.8s_ease_0.6s_forwards]">
+      Filozofia slow travel w kameralnych grupach. Podróżujemy wolniej, by&nbsp;doświadczać głębiej &mdash; z&nbsp;dala od tłumów, blisko autentycznych kultur i&nbsp;miejsc.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-[fadeInUp_0.8s_ease_0.8s_forwards]">
+      <a href="/wycieczki"
+         class="inline-flex items-center gap-2 bg-mc-accent hover:bg-mc-highlight text-white font-heading font-semibold px-8 py-3.5 rounded-lg transition-all duration-300 text-sm sm:text-base hover:shadow-lg hover:shadow-black/10 hover:-translate-y-0.5">
+        <span>Nasze wycieczki</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+      <a href="/kontakt"
+         class="inline-flex items-center gap-2 border border-mc-accent/30 hover:border-mc-accent text-mc-accent hover:text-mc-highlight font-heading font-semibold px-8 py-3.5 rounded-lg transition-all duration-300 text-sm sm:text-base hover:-translate-y-0.5">
+        <span>Skontaktuj się</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 animate-[fadeInUp_0.8s_ease_1.2s_forwards]">
+    <div class="w-6 h-10 border-2 border-mc-muted/30 rounded-full flex justify-center">
+      <div class="w-1.5 h-1.5 bg-mc-accent rounded-full mt-2 animate-bounce"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FEATURED TOURS — "Nadchodzące wycieczki"
+     ============================================================ -->
+<% if (featuredTours && featuredTours.length > 0) { %>
+<section class="py-20 md:py-28 bg-mc-bg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section heading -->
+    <div class="text-center mb-14">
+      <p class="font-heading text-mc-accent text-xs uppercase tracking-[0.25em] mb-3">Odkryj najbliższe wyjazdy</p>
+      <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-mc-light">Nadchodzące wycieczki</h2>
+      <div class="w-16 h-0.5 bg-mc-accent/30 mx-auto mt-6"></div>
+    </div>
+
+    <!-- Tour cards grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% featuredTours.slice(0, 3).forEach(function(tour) { %>
+      <a href="/wycieczki/<%= tour.slug %>"
+         class="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-mc-accent/30 transition-all duration-500 hover:scale-[1.03] hover:shadow-xl hover:shadow-black/5">
+
+        <!-- Cover image -->
+        <div class="relative h-56 overflow-hidden">
+          <% if (tour.cover_image) { %>
+            <img src="<%= tour.cover_image %>"
+                 alt="<%= tour.title %>"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                 loading="lazy"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="hidden w-full h-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+              <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/></svg>
+            </div>
+          <% } else { %>
+            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+              <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/></svg>
+            </div>
+          <% } %>
+
+          <!-- Destination badge -->
+          <% if (tour.destination) { %>
+          <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-mc-accent text-xs font-heading font-semibold px-3 py-1.5 rounded-full border border-gray-200">
+            <%= tour.destination %>
+          </div>
+          <% } %>
+
+          <!-- Available spots badge -->
+          <% if (typeof tour.available_spots !== 'undefined') { %>
+          <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-xs font-body px-3 py-1.5 rounded-full border border-gray-200
+                      <%= tour.available_spots <= 5 ? 'text-red-500 border-red-200' : 'text-mc-muted' %>">
+            <% if (tour.available_spots > 0) { %>
+              <%= tour.available_spots %> <%= tour.available_spots === 1 ? 'miejsce' : (tour.available_spots >= 2 && tour.available_spots <= 4 ? 'miejsca' : 'miejsc') %>
+            <% } else { %>
+              Brak miejsc
+            <% } %>
+          </div>
+          <% } %>
+        </div>
+
+        <!-- Card body -->
+        <div class="p-6">
+          <h3 class="font-heading font-semibold text-lg text-mc-light mb-2 group-hover:text-mc-accent transition-colors duration-300">
+            <%= tour.title %>
+          </h3>
+
+          <% if (tour.short_description) { %>
+          <p class="text-mc-muted text-sm leading-relaxed mb-4 line-clamp-2">
+            <%= tour.short_description %>
+          </p>
+          <% } %>
+
+          <!-- Meta info row -->
+          <div class="flex items-center gap-4 text-xs text-mc-muted mb-5">
+            <!-- Days -->
+            <% if (tour.days) { %>
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-mc-accent/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+              <span><%= tour.days %> dni</span>
+            </div>
+            <% } %>
+
+            <!-- Transport -->
+            <% if (tour.transport) { %>
+            <div class="flex items-center gap-1.5">
+              <% if (tour.transport === 'bus') { %>
+                <svg class="w-4 h-4 text-mc-accent/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 17h.01M16 17h.01M4 7h16M4 7a2 2 0 00-2 2v6a2 2 0 002 2h1m15-10a2 2 0 012 2v6a2 2 0 01-2 2h-1M4 7V5a2 2 0 012-2h12a2 2 0 012 2v2M7 17v2m10-2v2"/></svg>
+                <span>Autokar</span>
+              <% } else if (tour.transport === 'train') { %>
+                <svg class="w-4 h-4 text-mc-accent/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m-4-4l4 4 4-4M6 8h12M8 4h8a2 2 0 012 2v8a4 4 0 01-4 4H8a4 4 0 01-4-4V6a2 2 0 012-2z"/></svg>
+                <span>Pociąg</span>
+              <% } else if (tour.transport === 'plane') { %>
+                <svg class="w-4 h-4 text-mc-accent/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+                <span>Samolot</span>
+              <% } else if (tour.transport === 'own') { %>
+                <svg class="w-4 h-4 text-mc-accent/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H21M3.375 14.25h3.372c.729 0 1.428.29 1.944.806l.756.756c.515.516 1.215.806 1.944.806h1.218c.729 0 1.428-.29 1.944-.806l.756-.756a2.75 2.75 0 011.944-.806h3.372M3.375 14.25V3.75h17.25v10.5"/></svg>
+                <span>Własny transport</span>
+              <% } else { %>
+                <span><%= tour.transport %></span>
+              <% } %>
+            </div>
+            <% } %>
+          </div>
+
+          <!-- Price & CTA -->
+          <div class="flex items-end justify-between pt-4 border-t border-gray-100">
+            <div>
+              <% if (tour.price) { %>
+              <p class="text-xs text-mc-muted mb-0.5">od</p>
+              <p class="font-heading font-bold text-xl text-mc-light"><%= Number(tour.price).toLocaleString('pl-PL') %> <span class="text-sm font-normal text-mc-muted">PLN</span></p>
+              <% } %>
+            </div>
+            <span class="inline-flex items-center gap-1 text-mc-accent text-sm font-medium group-hover:gap-2 transition-all duration-300">
+              Szczegóły
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+      <% }); %>
+    </div>
+
+    <!-- View all tours link -->
+    <div class="text-center mt-12">
+      <a href="/wycieczki"
+         class="inline-flex items-center gap-2 text-mc-accent hover:text-mc-highlight font-heading font-medium transition-colors duration-300 group">
+        <span>Zobacz wszystkie wycieczki</span>
+        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+<% } %>
+
+
+<!-- ============================================================
+     WHY MAGNOLIA CLUB — "Dlaczego Magnolia Club?"
+     ============================================================ -->
+<section class="py-20 md:py-28 bg-mc-bg2/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section heading -->
+    <div class="text-center mb-14">
+      <p class="font-heading text-mc-accent text-xs uppercase tracking-[0.25em] mb-3">Co nas wyróżnia</p>
+      <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-mc-light">Dlaczego Magnolia Club?</h2>
+      <div class="w-16 h-0.5 bg-mc-accent/30 mx-auto mt-6"></div>
+    </div>
+
+    <!-- Feature cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+
+      <!-- Feature 1: Małe grupy -->
+      <div class="group bg-white border border-gray-200 rounded-2xl p-8 text-center hover:border-mc-accent/30 hover:shadow-lg hover:shadow-black/5 transition-all duration-500">
+        <div class="w-16 h-16 mx-auto mb-6 rounded-xl bg-mc-accent/5 flex items-center justify-center group-hover:bg-mc-accent/10 transition-colors duration-300">
+          <svg class="w-8 h-8 text-mc-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+          </svg>
+        </div>
+        <h3 class="font-heading font-semibold text-mc-light text-lg mb-3">Małe grupy</h3>
+        <p class="text-mc-muted text-sm leading-relaxed">Podróżujemy w kameralnych grupach. Dzięki temu każdy uczestnik otrzymuje indywidualną uwagę i&nbsp;komfort podróżowania.</p>
+      </div>
+
+      <!-- Feature 2: Doświadczony przewodnik -->
+      <div class="group bg-white border border-gray-200 rounded-2xl p-8 text-center hover:border-mc-accent/30 hover:shadow-lg hover:shadow-black/5 transition-all duration-500">
+        <div class="w-16 h-16 mx-auto mb-6 rounded-xl bg-mc-accent/5 flex items-center justify-center group-hover:bg-mc-accent/10 transition-colors duration-300">
+          <svg class="w-8 h-8 text-mc-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.745 3.745 0 011.043 3.296A3.745 3.745 0 0121 12z"/>
+          </svg>
+        </div>
+        <h3 class="font-heading font-semibold text-mc-light text-lg mb-3">Doświadczeni przewodnicy</h3>
+        <p class="text-mc-muted text-sm leading-relaxed">Nasi przewodnicy to pasjonaci podróży i&nbsp;historii, którzy dzielą się swoją wiedzą i&nbsp;entuzjazmem.</p>
+      </div>
+
+      <!-- Feature 3: Autentyczne doświadczenia -->
+      <div class="group bg-white border border-gray-200 rounded-2xl p-8 text-center hover:border-mc-accent/30 hover:shadow-lg hover:shadow-black/5 transition-all duration-500">
+        <div class="w-16 h-16 mx-auto mb-6 rounded-xl bg-mc-accent/5 flex items-center justify-center group-hover:bg-mc-accent/10 transition-colors duration-300">
+          <svg class="w-8 h-8 text-mc-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+          </svg>
+        </div>
+        <h3 class="font-heading font-semibold text-mc-light text-lg mb-3">Autentyczne doświadczenia</h3>
+        <p class="text-mc-muted text-sm leading-relaxed">Unikamy utartych szlaków turystycznych. Poznajemy lokalne tradycje, kuchnię i&nbsp;ludzi &mdash; tak, jak naprawdę żyją.</p>
+      </div>
+
+      <!-- Feature 4: Filozofia slow travel -->
+      <div class="group bg-white border border-gray-200 rounded-2xl p-8 text-center hover:border-mc-accent/30 hover:shadow-lg hover:shadow-black/5 transition-all duration-500">
+        <div class="w-16 h-16 mx-auto mb-6 rounded-xl bg-mc-accent/5 flex items-center justify-center group-hover:bg-mc-accent/10 transition-colors duration-300">
+          <svg class="w-8 h-8 text-mc-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <h3 class="font-heading font-semibold text-mc-light text-lg mb-3">Filozofia slow travel</h3>
+        <p class="text-mc-muted text-sm leading-relaxed">Podróżujemy wolniej, by doświadczać głębiej. Każdy wyjazd to czas na refleksję, odkrywanie i&nbsp;prawdziwy odpoczynek.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     STATS BAR
+     ============================================================ -->
+<section class="py-12 md:py-16 bg-mc-accent border-y border-gray-200">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-white/20">
+
+      <div class="sm:px-12 text-center">
+        <p class="font-heading text-3xl md:text-4xl font-bold text-white mb-1">Małe</p>
+        <p class="text-white/70 text-sm">kameralne grupy</p>
+      </div>
+
+      <div class="sm:px-12 text-center">
+        <p class="font-heading text-3xl md:text-4xl font-bold text-white mb-1">3+</p>
+        <p class="text-white/70 text-sm">lat doświadczenia</p>
+      </div>
+
+      <div class="sm:px-12 text-center">
+        <p class="font-heading text-3xl md:text-4xl font-bold text-white mb-1">50+</p>
+        <p class="text-white/70 text-sm">tras podróży</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     RECENT BLOG POSTS — "Z naszego bloga"
+     ============================================================ -->
+<% if (recentPosts && recentPosts.length > 0) { %>
+<section class="py-20 md:py-28 bg-mc-bg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section heading -->
+    <div class="text-center mb-14">
+      <p class="font-heading text-mc-accent text-xs uppercase tracking-[0.25em] mb-3">Inspiracje podróżnicze</p>
+      <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-mc-light">Z naszego bloga</h2>
+      <div class="w-16 h-0.5 bg-mc-accent/30 mx-auto mt-6"></div>
+    </div>
+
+    <!-- Blog cards grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% recentPosts.slice(0, 3).forEach(function(post) { %>
+      <a href="/blog/<%= post.slug %>"
+         class="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-mc-accent/30 transition-all duration-500 hover:shadow-xl hover:shadow-black/5">
+
+        <!-- Cover image -->
+        <div class="relative h-48 overflow-hidden">
+          <% if (post.cover_image) { %>
+            <img src="<%= post.cover_image %>"
+                 alt="<%= post.title %>"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                 loading="lazy"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="hidden w-full h-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+              <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5"/></svg>
+            </div>
+          <% } else { %>
+            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+              <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5"/></svg>
+            </div>
+          <% } %>
+
+          <!-- Category badge -->
+          <% if (post.category) { %>
+          <div class="absolute top-4 left-4 bg-mc-accent text-white text-xs font-heading font-semibold px-3 py-1 rounded-full">
+            <%= post.category %>
+          </div>
+          <% } %>
+        </div>
+
+        <!-- Card body -->
+        <div class="p-6">
+          <!-- Date -->
+          <% if (post.created_at) { %>
+          <p class="text-mc-muted text-xs mb-3 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+            <%= new Date(post.created_at).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+          </p>
+          <% } %>
+
+          <h3 class="font-heading font-semibold text-lg text-mc-light mb-3 group-hover:text-mc-accent transition-colors duration-300 line-clamp-2">
+            <%= post.title %>
+          </h3>
+
+          <% if (post.excerpt) { %>
+          <p class="text-mc-muted text-sm leading-relaxed line-clamp-3 mb-4">
+            <%= post.excerpt %>
+          </p>
+          <% } %>
+
+          <span class="inline-flex items-center gap-1 text-mc-accent text-sm font-medium group-hover:gap-2 transition-all duration-300">
+            Czytaj dalej
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+          </span>
+        </div>
+      </a>
+      <% }); %>
+    </div>
+
+    <!-- View all posts link -->
+    <div class="text-center mt-12">
+      <a href="/blog"
+         class="inline-flex items-center gap-2 text-mc-accent hover:text-mc-highlight font-heading font-medium transition-colors duration-300 group">
+        <span>Wszystkie wpisy</span>
+        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+<% } %>
+
+
+<!-- ============================================================
+     ANIMATION KEYFRAMES
+     ============================================================ -->
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

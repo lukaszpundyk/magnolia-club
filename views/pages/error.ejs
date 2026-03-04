@@ -1,0 +1,16 @@
+<!-- Error Page -->
+<section class="min-h-[60vh] flex items-center justify-center py-20">
+  <div class="text-center px-4">
+    <div class="text-8xl md:text-9xl font-heading font-bold text-mc-accent/20 mb-4"><%= statusCode %></div>
+    <h1 class="font-heading text-2xl md:text-3xl font-bold text-mc-light mb-4"><%= title %></h1>
+    <p class="text-mc-muted max-w-md mx-auto mb-8"><%= message %></p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="/" class="bg-mc-accent hover:bg-mc-highlight text-mc-bg font-semibold px-6 py-3 rounded-lg transition-all text-sm">
+        Strona główna
+      </a>
+      <a href="/wycieczki" class="bg-mc-dark hover:bg-mc-dark/80 text-mc-light font-medium px-6 py-3 rounded-lg transition-all text-sm border border-gray-200">
+        Nasze wycieczki
+      </a>
+    </div>
+  </div>
+</section>

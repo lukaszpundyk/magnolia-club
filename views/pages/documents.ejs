@@ -1,0 +1,64 @@
+<!-- Hero -->
+<section class="bg-gradient-to-b from-mc-dark to-mc-bg py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="text-sm text-mc-muted mb-4">
+      <a href="/" class="hover:text-mc-accent transition-colors">Strona główna</a>
+      <span class="mx-2">/</span>
+      <span class="text-mc-light">Dokumenty</span>
+    </nav>
+    <h1 class="font-heading text-3xl md:text-4xl font-bold text-mc-light">Dokumenty do pobrania</h1>
+    <p class="text-mc-muted mt-2 max-w-2xl">Regulaminy, programy wycieczek i informacje praktyczne.</p>
+  </div>
+</section>
+
+<section class="py-12">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <% const categories = Object.keys(documentsByCategory); %>
+    <% if (categories.length === 0) { %>
+      <div class="text-center py-16">
+        <svg class="w-16 h-16 text-mc-muted mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <h3 class="font-heading text-xl text-mc-light mb-2">Brak dokumentów</h3>
+        <p class="text-mc-muted">Dokumenty zostaną dodane wkrótce.</p>
+      </div>
+    <% } else { %>
+      <div class="space-y-10">
+        <% categories.forEach(category => { %>
+          <div>
+            <h2 class="font-heading text-xl font-semibold text-mc-light mb-4 flex items-center">
+              <svg class="w-5 h-5 text-mc-accent mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+              </svg>
+              <%= category %>
+            </h2>
+            <div class="space-y-3">
+              <% documentsByCategory[category].forEach(doc => { %>
+                <div class="bg-white rounded-xl border border-gray-200 p-5 flex items-center justify-between hover:border-mc-accent/30 transition-all group">
+                  <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
+                      <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="font-medium text-mc-light text-sm"><%= doc.title %></h3>
+                      <% if (doc.description) { %>
+                        <p class="text-mc-muted text-xs mt-1"><%= doc.description %></p>
+                      <% } %>
+                    </div>
+                  </div>
+                  <a href="/uploads/documents/<%= doc.filename %>" download
+                     class="flex items-center space-x-2 bg-mc-accent/10 hover:bg-mc-accent/20 text-mc-accent px-4 py-2 rounded-lg transition-all text-sm font-medium flex-shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Pobierz</span>
+                  </a>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+</section>

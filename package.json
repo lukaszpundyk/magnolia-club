@@ -1,0 +1,23 @@
+{
+  "name": "magnolia-club",
+  "version": "1.0.0",
+  "description": "Magnolia Club - Premium small-group travel agency website",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "seed": "node database/seed.js",
+    "dev": "node --watch app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.1",
+    "marked": "^15.0.4",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.16"
+  }
+}

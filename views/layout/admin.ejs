@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'mc-bg': '#FAFAFA',
+            'mc-bg2': '#F0F0F0',
+            'mc-dark': '#FFFFFF',
+            'mc-accent': '#4A4A4A',
+            'mc-light': '#1A1A1A',
+            'mc-muted': '#8A8A8A',
+            'mc-highlight': '#333333',
+          },
+          fontFamily: {
+            body: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-mc-bg text-mc-light font-body min-h-screen">
+  <% if (typeof adminUsername !== 'undefined' && adminUsername) { %>
+  <!-- Admin Header -->
+  <nav class="bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14">
+        <div class="flex items-center space-x-6">
+          <a href="/admin" class="font-semibold text-mc-accent">Panel Admina</a>
+          <div class="hidden md:flex items-center space-x-4">
+            <a href="/admin/tours" class="text-mc-muted hover:text-mc-light text-sm transition-colors">Wycieczki</a>
+            <a href="/admin/blog" class="text-mc-muted hover:text-mc-light text-sm transition-colors">Blog</a>
+            <a href="/admin/documents" class="text-mc-muted hover:text-mc-light text-sm transition-colors">Dokumenty</a>
+            <a href="/admin/contacts" class="text-mc-muted hover:text-mc-light text-sm transition-colors">Zapytania</a>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a href="/" class="text-mc-muted hover:text-mc-light text-sm transition-colors">Strona publiczna</a>
+          <span class="text-gray-300 text-sm hidden sm:inline">|</span>
+          <span class="text-mc-muted text-sm hidden sm:inline"><%= adminUsername %></span>
+          <a href="/admin/logout" class="text-red-500 hover:text-red-600 text-sm transition-colors">Wyloguj</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <% } %>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <%- body %>
+  </main>
+</body>
+</html>

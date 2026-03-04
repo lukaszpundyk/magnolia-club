@@ -1,0 +1,103 @@
+<div class="flex items-center justify-between mb-8">
+  <h1 class="font-heading text-2xl font-bold text-mc-light"><%= post && post.id ? 'Edytuj wpis' : 'Dodaj wpis' %></h1>
+  <a href="/admin/blog" class="text-mc-muted hover:text-mc-light text-sm transition-colors">&larr; Powrót do listy</a>
+</div>
+
+<% if (error) { %>
+  <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm"><%= error %></div>
+<% } %>
+
+<form action="/admin/blog/<%= post && post.id ? 'edit/' + post.id : 'add' %>" method="POST" enctype="multipart/form-data" class="space-y-8">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+  <!-- Basic Info -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Informacje o wpisie</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-mc-light mb-2">Tytuł *</label>
+        <input type="text" name="title" value="<%= post ? post.title : '' %>" required
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Kategoria</label>
+        <input type="text" name="category" value="<%= post ? post.category : '' %>" placeholder="np. Berlin, Tips, History"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Autor</label>
+        <input type="text" name="author" value="<%= post ? post.author : 'Łukasz' %>"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+    </div>
+  </div>
+
+  <!-- Excerpt -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <label class="block text-sm font-medium text-mc-light mb-2">Zajawka (krótki opis)</label>
+    <textarea name="excerpt" rows="3"
+              class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y"><%= post ? post.excerpt : '' %></textarea>
+  </div>
+
+  <!-- Content -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <div class="flex items-center justify-between mb-2">
+      <label class="block text-sm font-medium text-mc-light">Treść (Markdown)</label>
+      <button type="button" id="preview-toggle" class="text-xs text-mc-accent hover:text-mc-highlight transition-colors">Pokaż podgląd</button>
+    </div>
+    <textarea name="content" id="content-editor" rows="20"
+              class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y font-mono text-sm"><%= post ? post.content : '' %></textarea>
+    <div id="content-preview" class="hidden bg-gray-50 border border-gray-200 rounded-lg px-6 py-4 mt-3 prose prose-sm max-w-none"></div>
+    <p class="text-xs text-mc-muted mt-2">Obsługiwane formatowanie: # Nagłówek, **pogrubienie**, *kursywa*, - lista, [link](url)</p>
+  </div>
+
+  <!-- Cover Image -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="font-heading font-semibold text-mc-light mb-4">Zdjęcie główne</h2>
+    <% if (post && post.cover_image) { %>
+      <div class="mb-3">
+        <img src="/uploads/blog/<%= post.cover_image %>" alt="" class="w-40 h-28 rounded-lg object-cover">
+      </div>
+    <% } %>
+    <input type="file" name="cover_image" accept=".jpg,.jpeg,.png,.webp"
+           class="w-full text-mc-muted text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-mc-accent/10 file:text-mc-accent hover:file:bg-mc-accent/20 file:cursor-pointer">
+    <p class="text-xs text-mc-muted mt-1">JPG, PNG lub WebP. Max 5MB.</p>
+  </div>
+
+  <!-- Settings -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <label class="flex items-center space-x-3 cursor-pointer">
+      <input type="checkbox" name="published" value="1" <%= post && post.published ? 'checked' : '' %>
+             class="w-4 h-4 rounded border-gray-300 bg-white text-mc-accent focus:ring-mc-accent focus:ring-offset-0">
+      <span class="text-sm text-mc-light">Opublikowany (widoczny publicznie)</span>
+    </label>
+  </div>
+
+  <!-- Submit -->
+  <div class="flex items-center justify-between">
+    <a href="/admin/blog" class="text-mc-muted hover:text-mc-light text-sm transition-colors">Anuluj</a>
+    <button type="submit" class="bg-mc-accent hover:bg-mc-highlight text-white font-semibold px-8 py-3 rounded-lg transition-all">
+      <%= post && post.id ? 'Zapisz zmiany' : 'Dodaj wpis' %>
+    </button>
+  </div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  const toggle = document.getElementById('preview-toggle');
+  const editor = document.getElementById('content-editor');
+  const preview = document.getElementById('content-preview');
+  let showPreview = false;
+
+  toggle.addEventListener('click', () => {
+    showPreview = !showPreview;
+    if (showPreview) {
+      preview.innerHTML = marked.parse(editor.value);
+      preview.classList.remove('hidden');
+      toggle.textContent = 'Ukryj podgląd';
+    } else {
+      preview.classList.add('hidden');
+      toggle.textContent = 'Pokaż podgląd';
+    }
+  });
+</script>

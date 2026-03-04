@@ -1,0 +1,761 @@
+<%
+  // Helper: format date as DD.MM.YYYY
+  function formatDate(dateStr) {
+    if (!dateStr) return '---';
+    const d = new Date(dateStr);
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return dd + '.' + mm + '.' + yyyy;
+  }
+
+  // Helper: transport label and icon name
+  function transportLabel(t) {
+    const map = { bus: 'Autokar', train: 'Pociąg', plane: 'Samolot', own: 'Własny transport' };
+    return map[(t || '').toLowerCase()] || t || '---';
+  }
+%>
+
+<!-- ============================================
+     1. HERO SECTION
+     ============================================ -->
+<section class="relative h-[50vh] min-h-[360px] md:min-h-[420px] flex items-end overflow-hidden">
+  <% if (tour.cover_image) { %>
+    <img
+      src="/uploads/tours/<%= tour.cover_image %>"
+      alt="<%= tour.title %>"
+      class="absolute inset-0 w-full h-full object-cover"
+    />
+  <% } %>
+  <!-- Gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-t from-mc-bg via-mc-bg/60 to-transparent"></div>
+
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-mc-muted mb-4">
+      <a href="/" class="hover:text-mc-accent transition-colors">Strona główna</a>
+      <span class="mx-2">/</span>
+      <a href="/wycieczki" class="hover:text-mc-accent transition-colors">Wycieczki</a>
+      <span class="mx-2">/</span>
+      <span class="text-mc-light"><%= tour.title %></span>
+    </nav>
+
+    <h1 class="font-heading text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-lg">
+      <%= tour.title %>
+    </h1>
+
+    <% if (tour.destination) { %>
+      <p class="mt-3 text-mc-highlight font-medium text-lg flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <%= tour.destination %>
+      </p>
+    <% } %>
+  </div>
+</section>
+
+<!-- ============================================
+     2. KEY INFO BAR
+     ============================================ -->
+<section class="bg-mc-bg2 border-y border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
+
+      <!-- Departure date -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-mc-dark flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-mc-muted uppercase tracking-wide">Wyjazd</p>
+          <p class="text-sm font-semibold text-mc-light"><%= formatDate(tour.departure_date) %></p>
+        </div>
+      </div>
+
+      <!-- Return date -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-mc-dark flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-mc-muted uppercase tracking-wide">Powrót</p>
+          <p class="text-sm font-semibold text-mc-light"><%= formatDate(tour.return_date) %></p>
+        </div>
+      </div>
+
+      <!-- Transport -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-mc-dark flex items-center justify-center flex-shrink-0">
+          <% if ((tour.transport || '').toLowerCase() === 'plane') { %>
+            <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 19l-7-7 1.41-1.41L11 15.17V2h2v13.17l4.59-4.58L19 12l-7 7z"
+                    transform="rotate(-45 12 12)"/>
+            </svg>
+          <% } else if ((tour.transport || '').toLowerCase() === 'train') { %>
+            <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 17l-2 4m10-4l2 4M12 2C8 2 5 3 5 6v9c0 2 2 3 4 3h6c2 0 4-1 4-3V6c0-3-3-4-7-4zM9 15h.01M15 15h.01M5 10h14"/>
+            </svg>
+          <% } else { %>
+            <!-- Autokar / Własny / default: bus icon -->
+            <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 17h.01M16 17h.01M5 11V7a7 7 0 0114 0v4M5 11h14l1 5H4l1-5zm0 5v2a1 1 0 001 1h2a1 1 0 001-1v-1m6 1v1a1 1 0 001 1h2a1 1 0 001-1v-2"/>
+            </svg>
+          <% } %>
+        </div>
+        <div>
+          <p class="text-xs text-mc-muted uppercase tracking-wide">Transport</p>
+          <p class="text-sm font-semibold text-mc-light"><%= transportLabel(tour.transport) %></p>
+        </div>
+      </div>
+
+      <!-- Duration -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-mc-dark flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-mc-muted uppercase tracking-wide">Czas trwania</p>
+          <p class="text-sm font-semibold text-mc-light"><%= tour.days %> dni</p>
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-mc-dark flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-mc-muted uppercase tracking-wide">Cena</p>
+          <p class="text-sm font-bold text-mc-highlight"><%= tour.price %> PLN</p>
+        </div>
+      </div>
+
+      <!-- Available spots -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-mc-dark flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-mc-muted uppercase tracking-wide">Miejsca</p>
+          <p class="text-sm font-semibold text-mc-light">
+            <% if (tour.available_spots !== null && tour.available_spots !== undefined) { %>
+              <span class="<%= tour.available_spots <= 3 ? 'text-red-400' : 'text-mc-light' %>">
+                <%= tour.available_spots %>/<%= tour.max_participants %>
+              </span> wolnych
+            <% } else { %>
+              <%= tour.max_participants %> maks.
+            <% } %>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     3. DESCRIPTION
+     ============================================ -->
+<section class="py-12 md:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl">
+      <h2 class="font-heading text-2xl md:text-3xl font-bold text-mc-light mb-6">O wycieczce</h2>
+      <% if (tour.short_description) { %>
+        <p class="text-mc-highlight text-lg mb-6 leading-relaxed font-medium">
+          <%= tour.short_description %>
+        </p>
+      <% } %>
+      <div class="text-mc-muted leading-relaxed text-base space-y-1">
+        <% if (tour.description) { %>
+          <%- tour.description.replace(/\n/g, '<br>') %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     4. IMAGE GALLERY
+     ============================================ -->
+<% if (tour.galleryImages && tour.galleryImages.length > 0) { %>
+<section class="pb-12 md:pb-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="font-heading text-2xl md:text-3xl font-bold text-mc-light mb-6">Galeria</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+      <% tour.galleryImages.forEach(function(img, index) { %>
+        <button
+          type="button"
+          class="gallery-thumb group relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer focus:outline-none focus:ring-2 focus:ring-mc-accent"
+          onclick="openGallery(<%= index %>)"
+        >
+          <img
+            src="/uploads/tours/<%= img %>"
+            alt="<%= tour.title %> - zdjęcie <%= index + 1 %>"
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+            </svg>
+          </div>
+        </button>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery lightbox modal -->
+<div id="gallery-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-sm" role="dialog" aria-modal="true">
+  <!-- Close button -->
+  <button
+    type="button"
+    onclick="closeGallery()"
+    class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+    aria-label="Zamknij galerię"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+
+  <!-- Previous button -->
+  <button
+    type="button"
+    onclick="prevImage()"
+    class="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+    aria-label="Poprzednie zdjęcie"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+  </button>
+
+  <!-- Next button -->
+  <button
+    type="button"
+    onclick="nextImage()"
+    class="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+    aria-label="Następne zdjęcie"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+    </svg>
+  </button>
+
+  <!-- Image container -->
+  <div class="w-full h-full flex items-center justify-center p-16">
+    <img
+      id="gallery-image"
+      src=""
+      alt=""
+      class="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+    />
+  </div>
+
+  <!-- Counter -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-sm font-medium bg-black/50 px-4 py-1.5 rounded-full">
+    <span id="gallery-counter">1</span> / <%= tour.galleryImages.length %>
+  </div>
+</div>
+<% } %>
+
+<!-- ============================================
+     5. TABS SECTION (Program / Zawiera / Informacje)
+     ============================================ -->
+<section class="py-12 md:py-16 bg-mc-bg2/30">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Tab buttons -->
+    <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+      <button
+        type="button"
+        class="tab-btn active font-heading font-semibold text-sm md:text-base px-5 py-3 border-b-2 transition-colors whitespace-nowrap"
+        data-tab="program"
+      >
+        Program
+      </button>
+      <button
+        type="button"
+        class="tab-btn font-heading font-semibold text-sm md:text-base px-5 py-3 border-b-2 transition-colors whitespace-nowrap"
+        data-tab="includes"
+      >
+        Co zawiera
+      </button>
+      <button
+        type="button"
+        class="tab-btn font-heading font-semibold text-sm md:text-base px-5 py-3 border-b-2 transition-colors whitespace-nowrap"
+        data-tab="info"
+      >
+        Informacje praktyczne
+      </button>
+    </div>
+
+    <!-- Tab: Program -->
+    <div id="tab-program" class="tab-content">
+      <div class="max-w-4xl">
+        <% if (tour.itinerary) { %>
+          <div class="text-mc-muted leading-relaxed space-y-1 whitespace-pre-line">
+            <%- tour.itinerary.replace(/\*\*([^*]+)\*\*/g, '<strong class="text-mc-accent font-semibold">$1</strong>').replace(/\n/g, '<br>') %>
+          </div>
+        <% } else { %>
+          <p class="text-mc-muted italic">Program wycieczki zostanie podany wkrótce.</p>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Tab: Co zawiera -->
+    <div id="tab-includes" class="tab-content hidden">
+      <div class="grid md:grid-cols-2 gap-8 max-w-4xl">
+
+        <!-- W cenie -->
+        <div>
+          <h3 class="font-heading font-bold text-lg text-mc-light mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            W cenie
+          </h3>
+          <% if (tour.includes) { %>
+            <ul class="space-y-2">
+              <% tour.includes.split('\n').filter(function(line) { return line.trim(); }).forEach(function(item) { %>
+                <li class="flex items-start gap-3 text-mc-muted">
+                  <svg class="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span><%= item.trim() %></span>
+                </li>
+              <% }); %>
+            </ul>
+          <% } else { %>
+            <p class="text-mc-muted italic">Informacje zostaną podane wkrótce.</p>
+          <% } %>
+        </div>
+
+        <!-- Nie zawiera -->
+        <div>
+          <h3 class="font-heading font-bold text-lg text-mc-light mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Nie zawiera
+          </h3>
+          <% if (tour.excludes) { %>
+            <ul class="space-y-2">
+              <% tour.excludes.split('\n').filter(function(line) { return line.trim(); }).forEach(function(item) { %>
+                <li class="flex items-start gap-3 text-mc-muted">
+                  <svg class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                  <span><%= item.trim() %></span>
+                </li>
+              <% }); %>
+            </ul>
+          <% } else { %>
+            <p class="text-mc-muted italic">Informacje zostaną podane wkrótce.</p>
+          <% } %>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tab: Informacje praktyczne -->
+    <div id="tab-info" class="tab-content hidden">
+      <div class="max-w-4xl space-y-8">
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-mc-dark/50 rounded-xl p-6 border border-gray-200">
+            <h3 class="font-heading font-bold text-mc-light mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              Miejsce zbiórki
+            </h3>
+            <p class="text-mc-muted text-sm leading-relaxed">
+              Szczegółowe informacje o miejscu i godzinie zbiórki zostaną przesłane uczestnikom
+              drogą mailową na 7 dni przed planowanym wyjazdem. Zazwyczaj zbiórka odbywa się
+              na parkingu przy ul. Dworcowej w Szczecinie.
+            </p>
+          </div>
+
+          <div class="bg-mc-dark/50 rounded-xl p-6 border border-gray-200">
+            <h3 class="font-heading font-bold text-mc-light mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              Wymagane dokumenty
+            </h3>
+            <p class="text-mc-muted text-sm leading-relaxed">
+              Na wycieczkę należy zabrać ważny dowód osobisty lub paszport (w przypadku wyjazdów
+              zagranicznych). Karta EKUZ jest zalecana przy podróżach po krajach UE.
+              Ubezpieczenie podróżne jest wliczone w cenę.
+            </p>
+          </div>
+
+          <div class="bg-mc-dark/50 rounded-xl p-6 border border-gray-200">
+            <h3 class="font-heading font-bold text-mc-light mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+              </svg>
+              Co zabrać ze sobą
+            </h3>
+            <p class="text-mc-muted text-sm leading-relaxed">
+              Wygodne obuwie do chodzenia, odzież dostosowaną do pogody, osobiste leki,
+              niewielki plecak na wycieczki piesze, butelkę na wodę oraz aparat fotograficzny.
+              W przypadku wycieczek górskich zalecamy kijki trekkingowe.
+            </p>
+          </div>
+
+          <div class="bg-mc-dark/50 rounded-xl p-6 border border-gray-200">
+            <h3 class="font-heading font-bold text-mc-light mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Ważne informacje
+            </h3>
+            <p class="text-mc-muted text-sm leading-relaxed">
+              Organizator zastrzega sobie prawo do zmiany kolejności zwiedzanych miejsc
+              z przyczyn niezależnych. Minimalna liczba uczestników to 8 osób.
+              W przypadku nieosiągnięcia minimum, organizator poinformuje o tym
+              na 14 dni przed wyjazdem.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================
+     6. BOOKING INQUIRY FORM
+     ============================================ -->
+<section class="py-12 md:py-16" id="zapytanie">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+
+      <div class="text-center mb-8">
+        <h2 class="font-heading text-2xl md:text-3xl font-bold text-mc-light">Zapytaj o tę wycieczkę</h2>
+        <p class="text-mc-muted mt-2">Masz pytania lub chcesz zarezerwować miejsce? Napisz do nas!</p>
+      </div>
+
+      <form action="/kontakt" method="POST" class="bg-mc-bg2 rounded-2xl p-6 md:p-8 border border-gray-200 space-y-5">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <!-- Name -->
+        <div>
+          <label for="inquiry-name" class="block text-sm font-medium text-mc-light mb-1.5">
+            Imię i nazwisko <span class="text-red-400">*</span>
+          </label>
+          <input
+            type="text"
+            id="inquiry-name"
+            name="name"
+            required
+            class="w-full bg-mc-dark border border-gray-200 rounded-lg px-4 py-3 text-mc-light placeholder-mc-muted/50 focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors text-sm"
+            placeholder="Jan Kowalski"
+          />
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="inquiry-email" class="block text-sm font-medium text-mc-light mb-1.5">
+            Adres e-mail <span class="text-red-400">*</span>
+          </label>
+          <input
+            type="email"
+            id="inquiry-email"
+            name="email"
+            required
+            class="w-full bg-mc-dark border border-gray-200 rounded-lg px-4 py-3 text-mc-light placeholder-mc-muted/50 focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors text-sm"
+            placeholder="jan@example.com"
+          />
+        </div>
+
+        <!-- Phone -->
+        <div>
+          <label for="inquiry-phone" class="block text-sm font-medium text-mc-light mb-1.5">
+            Telefon
+          </label>
+          <input
+            type="tel"
+            id="inquiry-phone"
+            name="phone"
+            class="w-full bg-mc-dark border border-gray-200 rounded-lg px-4 py-3 text-mc-light placeholder-mc-muted/50 focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors text-sm"
+            placeholder="+48 XXX XXX XXX"
+          />
+        </div>
+
+        <!-- Tour select -->
+        <div>
+          <label for="inquiry-tour" class="block text-sm font-medium text-mc-light mb-1.5">
+            Wycieczka
+          </label>
+          <select
+            id="inquiry-tour"
+            name="tour_id"
+            class="w-full bg-mc-dark border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors text-sm"
+          >
+            <option value="">-- wybierz wycieczkę --</option>
+            <% activeTours.forEach(function(t) { %>
+              <option value="<%= t.id %>" <%= t.id === tour.id ? 'selected' : '' %>><%= t.title %></option>
+            <% }); %>
+          </select>
+        </div>
+
+        <!-- Message -->
+        <div>
+          <label for="inquiry-message" class="block text-sm font-medium text-mc-light mb-1.5">
+            Wiadomość <span class="text-red-400">*</span>
+          </label>
+          <textarea
+            id="inquiry-message"
+            name="message"
+            rows="5"
+            required
+            class="w-full bg-mc-dark border border-gray-200 rounded-lg px-4 py-3 text-mc-light placeholder-mc-muted/50 focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors text-sm resize-y"
+          >Jestem zainteresowany/a wycieczką: <%= tour.title %></textarea>
+        </div>
+
+        <!-- GDPR -->
+        <div class="flex items-start gap-3">
+          <input
+            type="checkbox"
+            id="inquiry-gdpr"
+            name="gdpr"
+            value="1"
+            required
+            class="mt-1 w-4 h-4 rounded border-gray-300 bg-mc-dark text-mc-accent focus:ring-mc-accent flex-shrink-0"
+          />
+          <label for="inquiry-gdpr" class="text-xs text-mc-muted leading-relaxed">
+            Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi zapytania,
+            zgodnie z <a href="/dokumenty" class="text-mc-accent hover:underline">polityką prywatności</a>. <span class="text-red-400">*</span>
+          </label>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="w-full bg-mc-accent hover:bg-mc-highlight text-mc-bg font-semibold py-3 px-6 rounded-lg transition-all text-sm uppercase tracking-wider"
+        >
+          Wyślij zapytanie
+        </button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     7. RELATED TOURS
+     ============================================ -->
+<% if (relatedTours && relatedTours.length > 0) { %>
+<section class="py-12 md:py-16 bg-mc-bg2/30 border-t border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="font-heading text-2xl md:text-3xl font-bold text-mc-light mb-8">Podobne wycieczki</h2>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% relatedTours.forEach(function(rt) { %>
+        <a href="/wycieczki/<%= rt.slug %>" class="group block bg-mc-dark rounded-xl overflow-hidden border border-gray-200 hover:border-mc-accent/30 transition-all duration-300 hover:shadow-lg hover:shadow-mc-accent/5">
+          <!-- Image -->
+          <div class="relative aspect-[16/10] overflow-hidden">
+            <% if (rt.cover_image) { %>
+              <img
+                src="/uploads/tours/<%= rt.cover_image %>"
+                alt="<%= rt.title %>"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+            <% } else { %>
+              <div class="w-full h-full bg-gradient-to-br from-mc-dark to-mc-bg2 flex items-center justify-center">
+                <svg class="w-12 h-12 text-mc-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+            <% } %>
+            <div class="absolute inset-0 bg-gradient-to-t from-mc-dark/80 to-transparent"></div>
+
+            <% if (rt.destination) { %>
+              <span class="absolute top-3 left-3 bg-mc-bg/70 backdrop-blur-sm text-mc-light text-xs font-medium px-3 py-1 rounded-full">
+                <%= rt.destination %>
+              </span>
+            <% } %>
+          </div>
+
+          <!-- Card content -->
+          <div class="p-5">
+            <h3 class="font-heading font-bold text-mc-light text-lg mb-2 group-hover:text-mc-accent transition-colors line-clamp-2">
+              <%= rt.title %>
+            </h3>
+
+            <div class="flex items-center gap-4 text-xs text-mc-muted mb-3">
+              <span class="flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <%= rt.days %> dni
+              </span>
+              <% if (rt.transport) { %>
+                <span class="flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8 17h.01M16 17h.01M5 11V7a7 7 0 0114 0v4M5 11h14l1 5H4l1-5z"/>
+                  </svg>
+                  <%= transportLabel(rt.transport) %>
+                </span>
+              <% } %>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-mc-highlight font-bold text-lg"><%= rt.price %> PLN</span>
+              <span class="text-mc-accent text-xs font-medium group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                Szczegóły
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<!-- ============================================
+     INLINE SCRIPTS: Tabs + Gallery
+     ============================================ -->
+<style>
+  .tab-btn {
+    color: #9ca3af;
+    border-color: transparent;
+  }
+  .tab-btn:hover {
+    color: #e8e8e8;
+  }
+  .tab-btn.active {
+    color: #7b93b4;
+    border-color: #7b93b4;
+  }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  // ----- TAB SWITCHING -----
+  (function() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var tabId = btn.getAttribute('data-tab');
+
+        // Deactivate all tabs
+        tabButtons.forEach(function(b) { b.classList.remove('active'); });
+        tabContents.forEach(function(c) { c.classList.add('hidden'); });
+
+        // Activate selected tab
+        btn.classList.add('active');
+        var target = document.getElementById('tab-' + tabId);
+        if (target) target.classList.remove('hidden');
+      });
+    });
+  })();
+</script>
+
+<% if (tour.galleryImages && tour.galleryImages.length > 0) { %>
+<script>
+  // ----- GALLERY LIGHTBOX -----
+  var galleryImages = <%- JSON.stringify(tour.galleryImages) %>;
+  var currentImageIndex = 0;
+  var galleryModal = document.getElementById('gallery-modal');
+  var galleryImage = document.getElementById('gallery-image');
+  var galleryCounter = document.getElementById('gallery-counter');
+
+  function openGallery(index) {
+    currentImageIndex = index;
+    updateGalleryImage();
+    galleryModal.classList.remove('hidden');
+    galleryModal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGallery() {
+    galleryModal.classList.add('hidden');
+    galleryModal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+    updateGalleryImage();
+  }
+
+  function prevImage() {
+    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+    updateGalleryImage();
+  }
+
+  function updateGalleryImage() {
+    galleryImage.src = '/uploads/tours/' + galleryImages[currentImageIndex];
+    galleryImage.alt = '<%= tour.title.replace(/'/g, "\\'") %> - zdjęcie ' + (currentImageIndex + 1);
+    galleryCounter.textContent = (currentImageIndex + 1);
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (galleryModal.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeGallery();
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+  });
+
+  // Click outside image to close
+  galleryModal.addEventListener('click', function(e) {
+    if (e.target === galleryModal) closeGallery();
+  });
+</script>
+<% } %>
+
+<!-- ============================================
+     8. EXTERNAL GALLERY SCRIPT
+     ============================================ -->
+<script src="/js/gallery.js"></script>

@@ -1,0 +1,89 @@
+<div class="flex items-center justify-between mb-8">
+  <h1 class="font-heading text-2xl font-bold text-mc-light">Dokumenty</h1>
+</div>
+
+<% if (error) { %>
+  <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm"><%= error %></div>
+<% } %>
+
+<!-- Upload Form -->
+<div class="bg-white rounded-xl border border-gray-200 p-6 mb-8 shadow-sm">
+  <h2 class="font-heading font-semibold text-mc-light mb-6">Dodaj dokument</h2>
+  <form action="/admin/documents/add" method="POST" enctype="multipart/form-data" class="space-y-4">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Tytuł *</label>
+        <input type="text" name="title" required
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors text-sm">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Kategoria</label>
+        <input type="text" name="category" placeholder="np. Regulaminy, Programy wycieczek"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors text-sm">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Plik PDF *</label>
+        <input type="file" name="file" accept=".pdf" required
+               class="w-full text-mc-muted text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-mc-accent/10 file:text-mc-accent hover:file:bg-mc-accent/20 file:cursor-pointer">
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-mc-light mb-2">Opis</label>
+      <input type="text" name="description"
+             class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors text-sm">
+    </div>
+    <button type="submit" class="bg-mc-accent hover:bg-mc-highlight text-white font-semibold px-6 py-2.5 rounded-lg transition-all text-sm">Dodaj dokument</button>
+  </form>
+</div>
+
+<!-- Documents List -->
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+  <div class="px-6 py-4 border-b border-gray-200">
+    <h2 class="font-heading font-semibold text-mc-light">Lista dokumentów</h2>
+  </div>
+
+  <% if (documents.length === 0) { %>
+    <div class="px-6 py-12 text-center text-mc-muted text-sm">Brak dokumentów.</div>
+  <% } else { %>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-mc-muted text-xs uppercase tracking-wider border-b border-gray-200">
+            <th class="text-left px-6 py-3">Tytuł</th>
+            <th class="text-left px-6 py-3 hidden md:table-cell">Kategoria</th>
+            <th class="text-left px-6 py-3 hidden lg:table-cell">Opis</th>
+            <th class="text-left px-6 py-3 hidden lg:table-cell">Data</th>
+            <th class="text-right px-6 py-3">Akcje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% documents.forEach(doc => { %>
+            <tr class="border-b border-gray-200 hover:bg-gray-50">
+              <td class="px-6 py-3">
+                <div class="flex items-center space-x-3">
+                  <div class="w-8 h-8 rounded bg-red-50 flex items-center justify-center flex-shrink-0 border border-red-200">
+                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                  </div>
+                  <span class="text-mc-light font-medium"><%= doc.title %></span>
+                </div>
+              </td>
+              <td class="px-6 py-3 text-mc-muted hidden md:table-cell"><%= doc.category || '—' %></td>
+              <td class="px-6 py-3 text-mc-muted hidden lg:table-cell text-xs"><%= doc.description || '—' %></td>
+              <td class="px-6 py-3 text-mc-muted hidden lg:table-cell"><%= new Date(doc.created_at).toLocaleDateString('pl-PL') %></td>
+              <td class="px-6 py-3">
+                <div class="flex items-center justify-end space-x-3">
+                  <a href="/uploads/documents/<%= doc.filename %>" target="_blank" class="text-mc-accent hover:text-mc-highlight text-xs transition-colors">Pobierz</a>
+                  <form action="/admin/documents/delete/<%= doc.id %>" method="POST" class="inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten dokument?')">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="text-red-500 hover:text-red-600 text-xs transition-colors">Usuń</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

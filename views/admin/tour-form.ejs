@@ -1,0 +1,184 @@
+<div class="flex items-center justify-between mb-8">
+  <h1 class="font-heading text-2xl font-bold text-mc-light"><%= tour && tour.id ? 'Edytuj wycieczkę' : 'Dodaj wycieczkę' %></h1>
+  <a href="/admin/tours" class="text-mc-muted hover:text-mc-light text-sm transition-colors">&larr; Powrót do listy</a>
+</div>
+
+<% if (error) { %>
+  <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm"><%= error %></div>
+<% } %>
+
+<form action="/admin/tours/<%= tour && tour.id ? 'edit/' + tour.id : 'add' %>" method="POST" enctype="multipart/form-data" class="space-y-8">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+  <!-- Basic Info -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Informacje podstawowe</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-mc-light mb-2">Nazwa wycieczki *</label>
+        <input type="text" name="title" value="<%= tour ? tour.title : '' %>" required
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Cel podróży *</label>
+        <input type="text" name="destination" value="<%= tour ? tour.destination : '' %>" required placeholder="np. Berlin, Hamburg"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Transport</label>
+        <select name="transport" class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+          <option value="bus" <%= tour && tour.transport === 'bus' ? 'selected' : '' %>>Autokar</option>
+          <option value="train" <%= tour && tour.transport === 'train' ? 'selected' : '' %>>Pociąg</option>
+          <option value="plane" <%= tour && tour.transport === 'plane' ? 'selected' : '' %>>Samolot</option>
+          <option value="own" <%= tour && tour.transport === 'own' ? 'selected' : '' %>>Własny transport</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Liczba dni</label>
+        <input type="number" name="days" value="<%= tour ? tour.days : 1 %>" min="1"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Cena (PLN)</label>
+        <input type="number" name="price" value="<%= tour ? tour.price : 0 %>" min="0" step="0.01"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Data wyjazdu</label>
+        <input type="date" name="departure_date" value="<%= tour ? tour.departure_date : '' %>"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Data powrotu</label>
+        <input type="date" name="return_date" value="<%= tour ? tour.return_date : '' %>"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Max uczestników</label>
+        <input type="number" name="max_participants" value="<%= tour ? tour.max_participants : 18 %>" min="1"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Wolne miejsca</label>
+        <input type="number" name="available_spots" value="<%= tour ? tour.available_spots : 18 %>" min="0"
+               class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
+      </div>
+    </div>
+  </div>
+
+  <!-- Descriptions -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Opisy</h2>
+    <div class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Krótki opis (na kafelku)</label>
+        <textarea name="short_description" rows="3"
+                  class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y"><%= tour ? tour.short_description : '' %></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Pełny opis</label>
+        <textarea name="description" rows="8"
+                  class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y"><%= tour ? tour.description : '' %></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Itinerary & Includes/Excludes -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Program i szczegóły</h2>
+    <div class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Program wycieczki (dzień po dniu)</label>
+        <p class="text-xs text-mc-muted mb-2">Użyj **tekst** dla pogrubienia (np. godzin). Każda linia to nowy punkt.</p>
+        <textarea name="itinerary" rows="12"
+                  class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y font-mono text-sm"><%= tour ? tour.itinerary : '' %></textarea>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-mc-light mb-2">W cenie (każdy punkt w nowej linii)</label>
+          <textarea name="includes" rows="6"
+                    class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y text-sm"><%= tour ? tour.includes : '' %></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-mc-light mb-2">Nie zawiera (każdy punkt w nowej linii)</label>
+          <textarea name="excludes" rows="6"
+                    class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y text-sm"><%= tour ? tour.excludes : '' %></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Images -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Zdjęcia</h2>
+    <div class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Zdjęcie główne</label>
+        <% if (tour && tour.cover_image) { %>
+          <div class="mb-3">
+            <img src="/uploads/tours/<%= tour.cover_image %>" alt="" class="w-40 h-28 rounded-lg object-cover">
+          </div>
+        <% } %>
+        <input type="file" name="cover_image" accept=".jpg,.jpeg,.png,.webp"
+               class="w-full text-mc-muted text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-mc-accent/10 file:text-mc-accent hover:file:bg-mc-accent/20 file:cursor-pointer">
+        <p class="text-xs text-mc-muted mt-1">JPG, PNG lub WebP. Max 5MB.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery (only on edit) -->
+  <% if (tour && tour.id) { %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Galeria zdjęć</h2>
+    <% const galleryImages = JSON.parse(tour.gallery_images || '[]'); %>
+    <% if (galleryImages.length > 0) { %>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <% galleryImages.forEach(img => { %>
+          <div class="relative group">
+            <img src="/uploads/tours/<%= img %>" alt="" class="w-full aspect-square rounded-lg object-cover">
+            <form action="/admin/tours/gallery-delete/<%= tour.id %>" method="POST" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <input type="hidden" name="image" value="<%= img %>">
+              <button type="submit" onclick="return confirm('Usunąć to zdjęcie?')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs">&times;</button>
+            </form>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+    <form action="/admin/tours/gallery/<%= tour.id %>" method="POST" enctype="multipart/form-data" class="flex items-end gap-4">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="flex-grow">
+        <label class="block text-sm font-medium text-mc-light mb-2">Dodaj zdjęcia do galerii (max 10 łącznie)</label>
+        <input type="file" name="gallery_images" multiple accept=".jpg,.jpeg,.png,.webp"
+               class="w-full text-mc-muted text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-mc-accent/10 file:text-mc-accent hover:file:bg-mc-accent/20 file:cursor-pointer">
+      </div>
+      <button type="submit" class="bg-mc-accent hover:bg-mc-highlight text-white font-semibold px-5 py-2.5 rounded-lg transition-all text-sm whitespace-nowrap">Dodaj zdjęcia</button>
+    </form>
+  </div>
+  <% } %>
+
+  <!-- Toggles -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Ustawienia</h2>
+    <div class="flex flex-wrap gap-6">
+      <label class="flex items-center space-x-3 cursor-pointer">
+        <input type="checkbox" name="featured" value="1" <%= tour && tour.featured ? 'checked' : '' %>
+               class="w-4 h-4 rounded border-gray-300 bg-white text-mc-accent focus:ring-mc-accent focus:ring-offset-0">
+        <span class="text-sm text-mc-light">Wyróżniona (na stronie głównej)</span>
+      </label>
+      <label class="flex items-center space-x-3 cursor-pointer">
+        <input type="checkbox" name="active" value="1" <%= !tour || tour.active ? 'checked' : '' %>
+               class="w-4 h-4 rounded border-gray-300 bg-white text-mc-accent focus:ring-mc-accent focus:ring-offset-0">
+        <span class="text-sm text-mc-light">Aktywna (widoczna publicznie)</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="flex items-center justify-between">
+    <a href="/admin/tours" class="text-mc-muted hover:text-mc-light text-sm transition-colors">Anuluj</a>
+    <button type="submit" class="bg-mc-accent hover:bg-mc-highlight text-white font-semibold px-8 py-3 rounded-lg transition-all">
+      <%= tour && tour.id ? 'Zapisz zmiany' : 'Dodaj wycieczkę' %>
+    </button>
+  </div>
+</form>
