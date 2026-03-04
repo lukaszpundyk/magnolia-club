@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@config "../tailwind.config.js";
+
+@theme {
+  --color-mc-bg: #F7F9FB;
+  --color-mc-bg2: #ECF0F5;
+  --color-mc-dark: #FFFFFF;
+  --color-mc-accent: #6E8BA0;
+  --color-mc-light: #1E2A36;
+  --color-mc-muted: #8A95A3;
+  --color-mc-highlight: #516F88;
+
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}

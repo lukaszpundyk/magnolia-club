@@ -7,27 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'mc-bg': '#FAFAFA',
-            'mc-bg2': '#F0F0F0',
-            'mc-dark': '#FFFFFF',
-            'mc-accent': '#4A4A4A',
-            'mc-light': '#1A1A1A',
-            'mc-muted': '#8A8A8A',
-            'mc-highlight': '#333333',
-          },
-          fontFamily: {
-            body: ['Inter', 'sans-serif'],
-          }
-        }
-      }
+  <link rel="stylesheet" href="/css/tailwind.css">
+  <style>
+    :root {
+      --color-mc-bg: #FAFAFA;
+      --color-mc-bg2: #F0F0F0;
+      --color-mc-dark: #FFFFFF;
+      --color-mc-accent: #4A4A4A;
+      --color-mc-light: #1A1A1A;
+      --color-mc-muted: #8A8A8A;
+      --color-mc-highlight: #333333;
     }
-  </script>
+  </style>
 </head>
 <body class="bg-mc-bg text-mc-light font-body min-h-screen">
   <% if (typeof adminUsername !== 'undefined' && adminUsername) { %>

@@ -79,7 +79,7 @@
         <!-- Cover image -->
         <div class="relative h-56 overflow-hidden">
           <% if (tour.cover_image) { %>
-            <img src="<%= tour.cover_image %>"
+            <img src="/uploads/tours/<%= tour.cover_image %>"
                  alt="<%= tour.title %>"
                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                  loading="lazy"
@@ -302,7 +302,7 @@
         <!-- Cover image -->
         <div class="relative h-48 overflow-hidden">
           <% if (post.cover_image) { %>
-            <img src="<%= post.cover_image %>"
+            <img src="/uploads/blog/<%= post.cover_image %>"
                  alt="<%= post.title %>"
                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                  loading="lazy"
