@@ -119,19 +119,37 @@
             <%= tour.title %>
           </h3>
 
-          <% if (tour.short_description) { %>
-          <p class="text-mc-muted text-sm leading-relaxed mb-4 line-clamp-2">
-            <%= tour.short_description %>
-          </p>
+          <%
+            var cardHighlights = (tour.highlights || tour.short_description || '').split('\n').filter(function(l) { return l.trim(); }).slice(0, 2);
+          %>
+          <% if (cardHighlights.length > 0) { %>
+          <ul class="space-y-1.5 mb-4">
+            <% cardHighlights.forEach(function(item) { %>
+              <li class="flex items-start gap-2 text-mc-muted text-sm">
+                <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="line-clamp-1"><%= item.trim() %></span>
+              </li>
+            <% }); %>
+          </ul>
           <% } %>
 
           <!-- Meta info row -->
-          <div class="flex items-center gap-4 text-xs text-mc-muted mb-5">
+          <div class="flex items-center gap-4 text-xs text-mc-muted mb-5 flex-wrap">
             <!-- Days -->
             <% if (tour.days) { %>
             <div class="flex items-center gap-1.5">
               <svg class="w-4 h-4 text-mc-accent/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
               <span><%= tour.days %> dni</span>
+            </div>
+            <% } %>
+
+            <!-- Departure city -->
+            <% if (tour.departure_city) { %>
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-mc-accent/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+              <span>z: <%= tour.departure_city %></span>
             </div>
             <% } %>
 
@@ -381,6 +399,12 @@
     }
   }
 
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;

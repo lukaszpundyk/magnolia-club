@@ -180,16 +180,16 @@ router.post('/tours/add', requireAuth, (req, res) => {
     const coverImage = req.file ? req.file.filename : null;
 
     db.prepare(`
-      INSERT INTO tours (title, slug, description, short_description, destination, destination_country, departure_city, transport, days, price, departure_date, return_date, max_participants, available_spots, cover_image, itinerary, includes, excludes, featured, active)
+      INSERT INTO tours (title, slug, description, highlights, destination, destination_country, departure_city, transport, days, price, departure_date, return_date, max_participants, available_spots, cover_image, includes, excludes, notes, featured, active)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
-      data.title, slug, data.description, data.short_description,
+      data.title, slug, data.description, data.highlights || null,
       data.destination, data.destination_country || null, data.departure_city || null,
       data.transport, parseInt(data.days) || 1,
       parseFloat(data.price) || 0, data.departure_date || null, data.return_date || null,
       parseInt(data.max_participants) || 18, parseInt(data.available_spots) || 18,
-      coverImage, data.itinerary, data.includes, data.excludes,
-      data.featured ? 1 : 0, data.active ? 1 : 0
+      coverImage, data.includes, data.excludes || null,
+      data.notes || null, data.featured ? 1 : 0, data.active ? 1 : 0
     );
 
     res.redirect('/admin/tours');
@@ -243,16 +243,16 @@ router.post('/tours/edit/:id', requireAuth, (req, res) => {
     }
 
     db.prepare(`
-      UPDATE tours SET title=?, description=?, short_description=?, destination=?, destination_country=?, departure_city=?, transport=?, days=?, price=?, departure_date=?, return_date=?, max_participants=?, available_spots=?, cover_image=?, itinerary=?, includes=?, excludes=?, featured=?, active=?
+      UPDATE tours SET title=?, description=?, highlights=?, destination=?, destination_country=?, departure_city=?, transport=?, days=?, price=?, departure_date=?, return_date=?, max_participants=?, available_spots=?, cover_image=?, includes=?, excludes=?, notes=?, featured=?, active=?
       WHERE id=?
     `).run(
-      data.title, data.description, data.short_description,
+      data.title, data.description, data.highlights || null,
       data.destination, data.destination_country || null, data.departure_city || null,
       data.transport, parseInt(data.days) || 1,
       parseFloat(data.price) || 0, data.departure_date || null, data.return_date || null,
       parseInt(data.max_participants) || 18, parseInt(data.available_spots) || 18,
-      coverImage, data.itinerary, data.includes, data.excludes,
-      data.featured ? 1 : 0, data.active ? 1 : 0, id
+      coverImage, data.includes, data.excludes || null,
+      data.notes || null, data.featured ? 1 : 0, data.active ? 1 : 0, id
     );
 
     res.redirect('/admin/tours');

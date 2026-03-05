@@ -86,6 +86,14 @@ try {
   db.exec(`ALTER TABLE tours ADD COLUMN departure_city TEXT`);
 } catch (e) { /* column already exists */ }
 
+try {
+  db.exec(`ALTER TABLE tours ADD COLUMN highlights TEXT`);
+} catch (e) { /* column already exists */ }
+
+try {
+  db.exec(`ALTER TABLE tours ADD COLUMN notes TEXT`);
+} catch (e) { /* column already exists */ }
+
 // Create default admin user if none exists
 const adminCount = db.prepare('SELECT COUNT(*) as c FROM admin_users').get().c;
 if (adminCount === 0) {

@@ -92,6 +92,17 @@ router.get('/:slug', (req, res) => {
     });
   }
 
+  // Backward compatibility: use highlights, fall back to short_description
+  if (!tour.highlights && tour.short_description) {
+    tour.highlights = tour.short_description;
+  }
+  // Backward compatibility: if itinerary exists separately, append to description
+  if (tour.itinerary && tour.description) {
+    tour.description = tour.description + '\n\n' + tour.itinerary;
+  } else if (tour.itinerary && !tour.description) {
+    tour.description = tour.itinerary;
+  }
+
   // Parse gallery images
   tour.galleryImages = JSON.parse(tour.gallery_images || '[]');
 

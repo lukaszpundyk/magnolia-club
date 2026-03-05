@@ -77,44 +77,49 @@
     </div>
   </div>
 
-  <!-- Descriptions -->
+  <!-- Highlights -->
   <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-    <h2 class="font-heading font-semibold text-mc-light mb-6">Opisy</h2>
-    <div class="space-y-6">
-      <div>
-        <label class="block text-sm font-medium text-mc-light mb-2">Krótki opis (na kafelku)</label>
-        <textarea name="short_description" rows="3"
-                  class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y"><%= tour ? tour.short_description : '' %></textarea>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-mc-light mb-2">Pełny opis</label>
-        <textarea name="description" rows="8"
-                  class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y"><%= tour ? tour.description : '' %></textarea>
-      </div>
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Dlaczego warto jechać?</h2>
+    <div>
+      <label class="block text-sm font-medium text-mc-light mb-2">Atuty wycieczki *</label>
+      <p class="text-xs text-mc-muted mb-2">Każdy punkt w nowej linii. Te punkty będą wyświetlane jako lista atutów na stronie wycieczki.</p>
+      <textarea name="highlights" rows="5" required placeholder="np.&#10;Rejs statkiem po Renie&#10;Degustacja win w winnicach&#10;Nocleg w zamku nad Mozelą&#10;Kameralna grupa max 18 osób"
+                class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y text-sm"><%= tour ? (tour.highlights || tour.short_description || '') : '' %></textarea>
     </div>
   </div>
 
-  <!-- Itinerary & Includes/Excludes -->
+  <!-- Description with program -->
   <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-    <h2 class="font-heading font-semibold text-mc-light mb-6">Program i szczegóły</h2>
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Opis i program wycieczki</h2>
+    <div>
+      <label class="block text-sm font-medium text-mc-light mb-2">Pełny opis z programem *</label>
+      <p class="text-xs text-mc-muted mb-2">Napisz pełny opis wycieczki łącznie z programem dzień po dniu. Użyj **tekst** dla pogrubienia.</p>
+      <textarea name="description" rows="16" required
+                class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y text-sm"><%= tour ? tour.description : '' %></textarea>
+    </div>
+  </div>
+
+  <!-- Includes, Excludes & Notes -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="font-heading font-semibold text-mc-light mb-6">Szczegóły cenowe i uwagi</h2>
     <div class="space-y-6">
-      <div>
-        <label class="block text-sm font-medium text-mc-light mb-2">Program wycieczki (dzień po dniu)</label>
-        <p class="text-xs text-mc-muted mb-2">Użyj **tekst** dla pogrubienia (np. godzin). Każda linia to nowy punkt.</p>
-        <textarea name="itinerary" rows="12"
-                  class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y font-mono text-sm"><%= tour ? tour.itinerary : '' %></textarea>
-      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="block text-sm font-medium text-mc-light mb-2">W cenie (każdy punkt w nowej linii)</label>
-          <textarea name="includes" rows="6"
+          <label class="block text-sm font-medium text-mc-light mb-2">Co zawarte w cenie * (każdy punkt w nowej linii)</label>
+          <textarea name="includes" rows="6" required
                     class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y text-sm"><%= tour ? tour.includes : '' %></textarea>
         </div>
         <div>
-          <label class="block text-sm font-medium text-mc-light mb-2">Nie zawiera (każdy punkt w nowej linii)</label>
+          <label class="block text-sm font-medium text-mc-light mb-2">Cena nie obejmuje <span class="text-mc-muted font-normal">(opcjonalne)</span></label>
           <textarea name="excludes" rows="6"
                     class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y text-sm"><%= tour ? tour.excludes : '' %></textarea>
         </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-mc-light mb-2">Uwagi dla klientów <span class="text-mc-muted font-normal">(opcjonalne)</span></label>
+        <p class="text-xs text-mc-muted mb-2">Ważne informacje praktyczne, np. "Zabierz gotówkę, karty nie są akceptowane". Każdy punkt w nowej linii.</p>
+        <textarea name="notes" rows="4" placeholder="np.&#10;Zabierz gotówkę — na toaletach nie zapłacisz kartą&#10;Paszport wymagany (kraje spoza Schengen)&#10;Wygodne buty — dużo chodzenia"
+                  class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y text-sm"><%= tour ? (tour.notes || '') : '' %></textarea>
       </div>
     </div>
   </div>
