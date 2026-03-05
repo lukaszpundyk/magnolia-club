@@ -21,6 +21,7 @@ if (isProduction) {
 // Helmet — security HTTP headers (XSS, clickjacking, sniffing protection)
 app.use(helmet({
   contentSecurityPolicy: {
+    useDefaults: false, // Don't merge with defaults (removes upgrade-insecure-requests)
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
@@ -29,7 +30,9 @@ app.use(helmet({
       imgSrc: ["'self'", "data:", "blob:"],
       connectSrc: ["'self'"],
       frameSrc: ["'none'"],
-      objectSrc: ["'none'"]
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"]
     }
   },
   crossOriginEmbedderPolicy: false,
@@ -97,7 +100,7 @@ app.use(session({
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 24 hours
     httpOnly: true,
-    secure: isProduction,
+    secure: false, // Set to true when HTTPS/SSL is configured
     sameSite: 'lax'
   }
 }));
