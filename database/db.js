@@ -86,4 +86,15 @@ try {
   db.exec(`ALTER TABLE tours ADD COLUMN departure_city TEXT`);
 } catch (e) { /* column already exists */ }
 
+// Create default admin user if none exists
+const adminCount = db.prepare('SELECT COUNT(*) as c FROM admin_users').get().c;
+if (adminCount === 0) {
+  const bcrypt = require('bcrypt');
+  const username = process.env.ADMIN_USER || 'admin';
+  const password = process.env.ADMIN_PASS || 'magnolia2025';
+  const hash = bcrypt.hashSync(password, 10);
+  db.prepare('INSERT INTO admin_users (username, password_hash) VALUES (?, ?)').run(username, hash);
+  console.log(`Admin user "${username}" created.`);
+}
+
 module.exports = db;
