@@ -57,6 +57,12 @@ const uploadTourGallery = multer({ storage: tourStorage, fileFilter: imageFilter
 const uploadBlogCover = multer({ storage: blogStorage, fileFilter: imageFilter, limits: { fileSize: 5 * 1024 * 1024 } }).single('cover_image');
 const uploadDocument = multer({ storage: docStorage, fileFilter: pdfFilter, limits: { fileSize: 10 * 1024 * 1024 } }).single('file');
 
+// CSRF check for multipart forms (after multer parses body)
+function checkCsrf(req) {
+  const token = req.body._csrf || req.headers['x-csrf-token'];
+  return token && token === req.session.csrfToken;
+}
+
 function slugify(text) {
   return text
     .toString()
@@ -157,6 +163,13 @@ router.post('/tours/add', requireAuth, (req, res) => {
       });
     }
 
+    if (!checkCsrf(req)) {
+      return res.status(403).render('admin/tour-form', {
+        title: 'Dodaj wycieczkę', layout: 'layout/admin', tour: req.body,
+        error: 'Token bezpieczeństwa wygasł. Spróbuj ponownie.', adminUsername: req.session.adminUsername
+      });
+    }
+
     const data = req.body;
     let slug = slugify(data.title);
 
@@ -209,6 +222,13 @@ router.post('/tours/edit/:id', requireAuth, (req, res) => {
       });
     }
 
+    if (!checkCsrf(req)) {
+      return res.status(403).render('admin/tour-form', {
+        title: 'Edytuj wycieczkę', layout: 'layout/admin', tour: req.body,
+        error: 'Token bezpieczeństwa wygasł. Spróbuj ponownie.', adminUsername: req.session.adminUsername
+      });
+    }
+
     const data = req.body;
     const id = req.params.id;
     const existing = db.prepare('SELECT * FROM tours WHERE id = ?').get(id);
@@ -243,6 +263,7 @@ router.post('/tours/edit/:id', requireAuth, (req, res) => {
 router.post('/tours/gallery/:id', requireAuth, (req, res) => {
   uploadTourGallery(req, res, (err) => {
     if (err) return res.redirect('/admin/tours/edit/' + req.params.id);
+    if (!checkCsrf(req)) return res.redirect('/admin/tours/edit/' + req.params.id);
 
     const tour = db.prepare('SELECT gallery_images FROM tours WHERE id = ?').get(req.params.id);
     if (!tour) return res.redirect('/admin/tours');
@@ -330,6 +351,13 @@ router.post('/blog/add', requireAuth, (req, res) => {
       });
     }
 
+    if (!checkCsrf(req)) {
+      return res.status(403).render('admin/blog-form', {
+        title: 'Dodaj wpis', layout: 'layout/admin', post: req.body,
+        error: 'Token bezpieczeństwa wygasł. Spróbuj ponownie.', adminUsername: req.session.adminUsername
+      });
+    }
+
     const data = req.body;
     let slug = slugify(data.title);
 
@@ -370,6 +398,13 @@ router.post('/blog/edit/:id', requireAuth, (req, res) => {
         post: { ...post, ...req.body },
         error: err.message,
         adminUsername: req.session.adminUsername
+      });
+    }
+
+    if (!checkCsrf(req)) {
+      return res.status(403).render('admin/blog-form', {
+        title: 'Edytuj wpis', layout: 'layout/admin', post: req.body,
+        error: 'Token bezpieczeństwa wygasł. Spróbuj ponownie.', adminUsername: req.session.adminUsername
       });
     }
 
@@ -433,6 +468,10 @@ router.post('/documents/add', requireAuth, (req, res) => {
         error: err.message,
         adminUsername: req.session.adminUsername
       });
+    }
+
+    if (!checkCsrf(req)) {
+      return res.redirect('/admin/documents');
     }
 
     if (!req.file) {

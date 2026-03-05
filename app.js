@@ -119,6 +119,11 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   if (req.method === 'POST') {
+    // Skip CSRF check for multipart/form-data (handled after multer in route handlers)
+    const contentType = req.headers['content-type'] || '';
+    if (contentType.includes('multipart/form-data')) {
+      return next();
+    }
     const token = req.body._csrf || req.headers['x-csrf-token'];
     if (!token || token !== req.session.csrfToken) {
       return res.status(403).render('pages/error', {
