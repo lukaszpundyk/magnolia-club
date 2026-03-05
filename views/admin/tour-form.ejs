@@ -94,8 +94,18 @@
     <div>
       <label class="block text-sm font-medium text-mc-light mb-2">Pełny opis z programem *</label>
       <p class="text-xs text-mc-muted mb-2">Napisz pełny opis wycieczki łącznie z programem dzień po dniu. Użyj **tekst** dla pogrubienia.</p>
+      <%
+        // Backward compat: merge old itinerary into description for editing
+        var descValue = '';
+        if (tour) {
+          descValue = tour.description || '';
+          if (tour.itinerary && descValue.indexOf(tour.itinerary) === -1) {
+            descValue = descValue ? descValue + '\n\n' + tour.itinerary : tour.itinerary;
+          }
+        }
+      %>
       <textarea name="description" rows="16" required
-                class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y text-sm"><%= tour ? tour.description : '' %></textarea>
+                class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors resize-y text-sm"><%= descValue %></textarea>
     </div>
   </div>
 
