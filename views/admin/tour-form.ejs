@@ -21,7 +21,7 @@
       </div>
       <div>
         <label class="block text-sm font-medium text-mc-light mb-2">Kraje docelowe *</label>
-        <input type="text" name="destination_country" value="<%= tour ? tour.destination_country : '' %>" required placeholder="np. Niemcy, Francja, Włochy (oddzielone przecinkami)"
+        <input type="text" name="destination_country" value="<%= tour ? (tour.destination_country || '') : '' %>" required placeholder="np. Niemcy, Francja, Włochy (oddzielone przecinkami)"
                class="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-mc-light focus:outline-none focus:border-mc-accent focus:ring-1 focus:ring-mc-accent transition-colors">
         <p class="text-xs text-mc-muted mt-1">Wpisz kraje oddzielone przecinkami, np. Niemcy, Austria, Czechy</p>
       </div>
@@ -152,37 +152,6 @@
     </div>
   </div>
 
-  <!-- Gallery (only on edit) -->
-  <% if (tour && tour.id) { %>
-  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-    <h2 class="font-heading font-semibold text-mc-light mb-6">Galeria zdjęć</h2>
-    <% const galleryImages = JSON.parse(tour.gallery_images || '[]'); %>
-    <% if (galleryImages.length > 0) { %>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <% galleryImages.forEach(img => { %>
-          <div class="relative group">
-            <img src="/uploads/tours/<%= img %>" alt="" class="w-full aspect-square rounded-lg object-cover">
-            <form action="/admin/tours/gallery-delete/<%= tour.id %>" method="POST" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-              <input type="hidden" name="image" value="<%= img %>">
-              <button type="submit" onclick="return confirm('Usunąć to zdjęcie?')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs">&times;</button>
-            </form>
-          </div>
-        <% }); %>
-      </div>
-    <% } %>
-    <form action="/admin/tours/gallery/<%= tour.id %>" method="POST" enctype="multipart/form-data" class="flex items-end gap-4">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-      <div class="flex-grow">
-        <label class="block text-sm font-medium text-mc-light mb-2">Dodaj zdjęcia do galerii (max 10 łącznie)</label>
-        <input type="file" name="gallery_images" multiple accept=".jpg,.jpeg,.png,.webp"
-               class="w-full text-mc-muted text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-mc-accent/10 file:text-mc-accent hover:file:bg-mc-accent/20 file:cursor-pointer">
-      </div>
-      <button type="submit" class="bg-mc-accent hover:bg-mc-highlight text-white font-semibold px-5 py-2.5 rounded-lg transition-all text-sm whitespace-nowrap">Dodaj zdjęcia</button>
-    </form>
-  </div>
-  <% } %>
-
   <!-- Toggles -->
   <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
     <h2 class="font-heading font-semibold text-mc-light mb-6">Ustawienia</h2>
@@ -208,3 +177,34 @@
     </button>
   </div>
 </form>
+
+<!-- Gallery (only on edit) - outside main form to avoid nested forms breaking CSRF -->
+<% if (tour && tour.id) { %>
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mt-8">
+  <h2 class="font-heading font-semibold text-mc-light mb-6">Galeria zdjęć</h2>
+  <% const galleryImages = JSON.parse(tour.gallery_images || '[]'); %>
+  <% if (galleryImages.length > 0) { %>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <% galleryImages.forEach(img => { %>
+        <div class="relative group">
+          <img src="/uploads/tours/<%= img %>" alt="" class="w-full aspect-square rounded-lg object-cover">
+          <form action="/admin/tours/gallery-delete/<%= tour.id %>" method="POST" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="image" value="<%= img %>">
+            <button type="submit" onclick="return confirm('Usunąć to zdjęcie?')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs">&times;</button>
+          </form>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+  <form action="/admin/tours/gallery/<%= tour.id %>" method="POST" enctype="multipart/form-data" class="flex items-end gap-4">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="flex-grow">
+      <label class="block text-sm font-medium text-mc-light mb-2">Dodaj zdjęcia do galerii (max 10 łącznie)</label>
+      <input type="file" name="gallery_images" multiple accept=".jpg,.jpeg,.png,.webp"
+             class="w-full text-mc-muted text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-mc-accent/10 file:text-mc-accent hover:file:bg-mc-accent/20 file:cursor-pointer">
+    </div>
+    <button type="submit" class="bg-mc-accent hover:bg-mc-highlight text-white font-semibold px-5 py-2.5 rounded-lg transition-all text-sm whitespace-nowrap">Dodaj zdjęcia</button>
+  </form>
+</div>
+<% } %>

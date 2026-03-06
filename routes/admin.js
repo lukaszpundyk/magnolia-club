@@ -59,7 +59,7 @@ const uploadDocument = multer({ storage: docStorage, fileFilter: pdfFilter, limi
 
 // CSRF check for multipart forms (after multer parses body)
 function checkCsrf(req) {
-  const token = req.body._csrf || req.headers['x-csrf-token'];
+  const token = (req.body._csrf || req.headers['x-csrf-token'] || '').trim();
   return token && token === req.session.csrfToken;
 }
 
