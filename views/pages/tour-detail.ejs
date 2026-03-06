@@ -220,13 +220,15 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl">
       <h2 class="font-heading text-2xl md:text-3xl font-bold text-mc-light mb-6">Dlaczego warto jechać?</h2>
-      <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-3">
+      <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-2.5">
         <% highlightsList.forEach(function(item) { %>
-          <li class="flex items-start gap-3 text-mc-muted">
-            <svg class="w-5 h-5 text-mc-accent flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span class="text-base"><%= item.trim() %></span>
+          <li class="flex items-start gap-3 text-mc-muted text-sm">
+            <span class="w-5 h-5 rounded-full bg-mc-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3 h-3 text-mc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+            <span><%= item.trim() %></span>
           </li>
         <% }); %>
       </ul>
@@ -243,7 +245,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl">
       <h2 class="font-heading text-2xl md:text-3xl font-bold text-mc-light mb-8">Opis i program wycieczki</h2>
-      <div class="text-mc-muted leading-relaxed text-base space-y-1 tour-description">
+      <div class="text-mc-muted leading-relaxed text-sm space-y-1 tour-description">
         <%- renderBold(tour.description).replace(/\n/g, '<br>') %>
       </div>
     </div>
@@ -353,9 +355,11 @@
           <ul class="space-y-2.5">
             <% includesList.forEach(function(item) { %>
               <li class="flex items-start gap-3 text-mc-muted text-sm">
-                <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                </svg>
+                <span class="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-3 h-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </span>
                 <span><%= item.trim() %></span>
               </li>
             <% }); %>
@@ -369,9 +373,11 @@
           <ul class="space-y-2.5">
             <% excludesList.forEach(function(item) { %>
               <li class="flex items-start gap-3 text-mc-muted text-sm">
-                <svg class="w-4 h-4 text-mc-muted/50 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+                <span class="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-3 h-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </span>
                 <span><%= item.trim() %></span>
               </li>
             <% }); %>
@@ -393,13 +399,15 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl">
       <h3 class="font-heading font-bold text-lg text-mc-light mb-4">Ważne informacje</h3>
-      <ul class="space-y-2">
+      <ul class="space-y-2.5">
         <% notesList.forEach(function(item) { %>
           <li class="flex items-start gap-3 text-mc-muted text-sm">
-            <svg class="w-4 h-4 text-mc-accent flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
+            <span class="w-5 h-5 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3 h-3 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </span>
             <span><%- renderBold(item.trim()) %></span>
           </li>
         <% }); %>
