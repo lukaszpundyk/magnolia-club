@@ -27,7 +27,7 @@
 <body class="bg-mc-bg text-mc-light font-body min-h-screen flex flex-col">
 
   <!-- Navigation -->
-  <nav class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+  <nav id="main-nav" class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between mc-header">
         <!-- Logo -->
@@ -144,6 +144,7 @@
       mobileMenu.classList.toggle('hidden');
       menuIcon.setAttribute('d', isOpen ? 'M4 6h16M4 12h16M4 18h16' : 'M6 18L18 6M6 6l12 12');
     });
+
   </script>
 </body>
 </html>

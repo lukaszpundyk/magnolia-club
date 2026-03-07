@@ -1,48 +1,39 @@
 <!-- ============================================================
-     HERO SECTION — full-screen with elegant light gradient
+     HERO SECTION — background photo with light overlay
      ============================================================ -->
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden -mt-[100px] md:-mt-[120px]">
-  <!-- Light gradient background -->
+<section class="relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden">
+  <!-- Background image (low opacity — subtle, not overwhelming) -->
+  <div class="absolute inset-0">
+    <img src="/images/hero-bg.jpg" alt="" class="w-full h-full object-cover opacity-30" fetchpriority="high">
+  </div>
+
+  <!-- Light wash — stronger in center for text readability, image peeks through edges -->
   <div class="absolute inset-0" style="background:
-    radial-gradient(ellipse 80% 50% at 50% 20%, rgba(110,139,160,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(81,111,136,0.04) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(110,139,160,0.03) 0%, transparent 50%),
-    linear-gradient(180deg, #F7F9FB 0%, #ECF0F5 40%, #FFFFFF 70%, #F7F9FB 100%);">
-  </div>
-
-  <!-- Subtle grid lines for depth -->
-  <div class="absolute inset-0 opacity-[0.03]" style="background-image:
-    linear-gradient(rgba(110,139,160,0.2) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(110,139,160,0.2) 1px, transparent 1px);
-    background-size: 60px 60px;">
-  </div>
-
-  <!-- Floating accent shapes -->
-  <div class="absolute top-1/4 left-10 w-72 h-72 bg-mc-accent/[0.03] rounded-full blur-3xl"></div>
-  <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-mc-highlight/[0.03] rounded-full blur-3xl"></div>
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(247,249,251,0.92) 0%, rgba(247,249,251,0.7) 60%, rgba(247,249,251,0.4) 100%),
+    linear-gradient(180deg, #F7F9FB 0%, transparent 15%, transparent 85%, #F7F9FB 100%);"></div>
 
   <!-- Hero content -->
-  <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-    <p class="font-heading text-mc-accent text-sm sm:text-base uppercase tracking-[0.3em] mb-6 opacity-0 animate-[fadeInUp_0.8s_ease_0.2s_forwards]">
+  <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 md:py-24">
+    <p class="font-heading text-mc-accent text-sm sm:text-base uppercase tracking-[0.3em] mb-6 opacity-0 animate-[fadeInUp_0.8s_ease_0.2s_forwards]" style="text-shadow: 0 0 20px rgba(247,249,251,0.8);">
       Magnolia Club &mdash; Biuro Podróży
     </p>
 
-    <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-mc-light leading-tight mb-6 opacity-0 animate-[fadeInUp_0.8s_ease_0.4s_forwards]">
+    <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-mc-light leading-tight mb-6 opacity-0 animate-[fadeInUp_0.8s_ease_0.4s_forwards]" style="text-shadow: 0 0 30px rgba(247,249,251,0.9), 0 0 60px rgba(247,249,251,0.5);">
       Poznaj świat<br class="hidden sm:block"> inaczej
     </h1>
 
-    <p class="font-body text-mc-muted text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-10 opacity-0 animate-[fadeInUp_0.8s_ease_0.6s_forwards]">
+    <p class="font-body text-gray-600 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-10 opacity-0 animate-[fadeInUp_0.8s_ease_0.6s_forwards]" style="text-shadow: 0 0 20px rgba(247,249,251,0.9), 0 0 40px rgba(247,249,251,0.6);">
       Filozofia slow travel w kameralnych grupach. Podróżujemy wolniej, by&nbsp;doświadczać głębiej &mdash; z&nbsp;dala od tłumów, blisko autentycznych kultur i&nbsp;miejsc.
     </p>
 
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-[fadeInUp_0.8s_ease_0.8s_forwards]">
       <a href="/wycieczki"
-         class="inline-flex items-center gap-2 bg-mc-accent hover:bg-mc-highlight text-white font-heading font-semibold px-8 py-3.5 rounded-lg transition-all duration-300 text-sm sm:text-base hover:shadow-lg hover:shadow-black/10 hover:-translate-y-0.5">
+         class="inline-flex items-center justify-center gap-2 bg-mc-accent hover:bg-mc-highlight text-white font-heading font-semibold px-12 py-4 rounded-lg transition-all duration-300 text-sm sm:text-base shadow-lg shadow-mc-accent/20 hover:shadow-xl hover:shadow-mc-accent/30 hover:-translate-y-0.5" style="min-width: 240px;">
         <span>Nasze wycieczki</span>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </a>
       <a href="/kontakt"
-         class="inline-flex items-center gap-2 border border-mc-accent/30 hover:border-mc-accent text-mc-accent hover:text-mc-highlight font-heading font-semibold px-8 py-3.5 rounded-lg transition-all duration-300 text-sm sm:text-base hover:-translate-y-0.5">
+         class="inline-flex items-center justify-center gap-2 bg-white border border-gray-300 hover:border-mc-accent text-mc-light hover:text-mc-accent font-heading font-semibold px-12 py-4 rounded-lg transition-all duration-300 text-sm sm:text-base shadow-md shadow-black/5 hover:shadow-lg hover:-translate-y-0.5" style="min-width: 240px;">
         <span>Skontaktuj się</span>
       </a>
     </div>
