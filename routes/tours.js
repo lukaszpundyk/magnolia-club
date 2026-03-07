@@ -63,10 +63,13 @@ router.get('/', (req, res) => {
     'SELECT DISTINCT departure_city FROM tours WHERE active = 1 AND departure_city IS NOT NULL ORDER BY departure_city'
   ).all().map(d => d.departure_city);
 
-  // Get price range
-  const priceRange = db.prepare(
+  // Get price range (round max UP to nearest 50 so the slider step=50 can reach it)
+  const priceRangeRaw = db.prepare(
     'SELECT MIN(price) as min, MAX(price) as max FROM tours WHERE active = 1'
   ).get();
+  const priceRange = priceRangeRaw
+    ? { min: Math.floor(priceRangeRaw.min / 50) * 50, max: Math.ceil(priceRangeRaw.max / 50) * 50 }
+    : { min: 0, max: 1000 };
 
   res.render('pages/tours', {
     title: 'Wycieczki - Magnolia Club',
@@ -74,7 +77,7 @@ router.get('/', (req, res) => {
     tours,
     countries,
     departureCities,
-    priceRange: priceRange || { min: 0, max: 1000 },
+    priceRange,
     filters: { transport, days, country, departure_city, maxPrice }
   });
 });
